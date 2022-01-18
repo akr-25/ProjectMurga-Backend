@@ -5,11 +5,12 @@ const FeedConsumptionLog = require("../models/FeedConsumptionLog");
 const Order = require("../models/Order");
 const PriceLog = require("../models/PriceLog");
 const Transactions = require("../models/Transactions"); 
+const sequelize = require("./connection");
 
 
 const includeAssociations = () =>{
     // customer -> order
-    Customer.hasMany(Order, {as: 'orders'});
+    Customer.hasMany(Order);
     Order.belongsTo(Customer);
     // order -> transactions
     Order.hasMany(Transactions);
@@ -20,13 +21,17 @@ const includeAssociations = () =>{
     // batch -> balancelogs
     Batch.hasMany(BalanceLog);
     BalanceLog.belongsTo(Batch);
-    // batch -> pricelogs
+    // // batch -> pricelogs
     Batch.hasMany(FeedConsumptionLog);
     FeedConsumptionLog.belongsTo(Batch);
-    // batch -> feedconsumptionlogs
+    // // batch -> feedconsumptionlogs
     Batch.hasMany(PriceLog);
     PriceLog.belongsTo(Batch);
 }
+
+const initAssociations = async () => {
+    await sequelize.sync({force:true }).then(includeAssociations()).catch(err => {console.log(err)})
+}; 
     
-module.exports = includeAssociations; 
+module.exports = initAssociations; 
 
