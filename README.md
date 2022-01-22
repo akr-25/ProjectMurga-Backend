@@ -1,11 +1,11 @@
 # PROJECT MURGA
 
-## In order to run and test the code, follow the below procedure:
+## In order to run and test the code, follow the below procedure
 
 1. Clone the repository in your local system
 
     ```sh
-    git clone https://github.com/akr-25/CV-Backend-Portal
+    git clone https://github.com/akr-25/ProjectMurga-Backend
     ```
 
 2. Install all dependencies
