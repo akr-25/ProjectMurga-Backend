@@ -8,13 +8,15 @@
     git clone https://github.com/akr-25/ProjectMurga-Backend
     ```
 
-2. Install all dependencies
+2. Fill the `.env` and the `config/config.json` file with the required details
+
+3. Install all dependencies
 
     ```sh
     npm install
     ```
 
-3. Run the project
+4. Run the project
 
     ```sh
     npm start
