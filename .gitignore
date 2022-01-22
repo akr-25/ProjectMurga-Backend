@@ -1,4 +1,4 @@
-node_modules
-migrations
-config/config.json
+node_modules/
+migrations/
 .env
+config/config.json
