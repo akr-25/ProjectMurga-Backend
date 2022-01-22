@@ -1,7 +1,27 @@
-const {sequelize, User} = require('./models');
+const express = require('express');
+require('dotenv').config();
+const morgan = require('morgan');
+const cors = require('cors');
+const helmet = require('helmet');
+const { sequelize } = require('./models');
 
-(async function(){
-    await sequelize.sync({force:true});
-    const cust = await User.create({user_id:"jdask"});
-    await cust.createRequest({request_id:"sadsad"})
-})().catch(e => {console.log(e)})
+const app = express();
+
+app.use(morgan('dev'));
+app.use(cors());
+app.use(helmet());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+
+const server = app.listen(process.env.PORT || 3000, async () => {
+    console.log(`Server is running on http://localhost:${server.address().port}`);
+    try {
+        await sequelize.authenticate();
+        await sequelize.sync();
+        console.log("Database connected");
+    }
+    catch (err) {
+        console.log(err);
+    }
+})
