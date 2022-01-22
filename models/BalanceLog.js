@@ -1,29 +1,32 @@
-const {Sequelize, DataTypes, Model} = require("sequelize");
-const sequelize = require("../utils/connection"); 
-
-class BalanceLog extends Model {};
-
-BalanceLog.init({
-    date: {
-        type: DataTypes.DATE
-    },
-    net_balance_type1: {
-        type: DataTypes.INTEGER,
-        defaultValue: 0
-    },
-    net_balance_type2: {
-        type: DataTypes.INTEGER,
-        defaultValue: 0
-    },
-    type_of_change: {
-        type: DataTypes.STRING(1), 
-        allowNull: false
+'use strict';
+const {
+  Model
+} = require('sequelize');
+module.exports = (sequelize, DataTypes) => {
+  class BalanceLog extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate({ Batch }) {
+      // define association here
+      this.belongsTo(Batch, {foreignKey: 'unit_id'}); 
     }
-},
-    {
-    sequelize, 
+  }
+  BalanceLog.init({
+    date: DataTypes.DATE,
+    unit_id: {
+      type:DataTypes.STRING,
+      allowNull:false
+    },
+    net_balance_type1: DataTypes.INTEGER,
+    net_balance_type2: DataTypes.INTEGER,
+    type_of_change: DataTypes.STRING(1)
+  }, {
+    sequelize,
+    tableName: 'balancelogs',
     modelName: 'BalanceLog',
-    tableName: 'BalanceLogs'
-})
-
-module.exports = BalanceLog; 
+  });
+  return BalanceLog;
+};

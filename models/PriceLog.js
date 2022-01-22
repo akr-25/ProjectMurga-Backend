@@ -1,23 +1,30 @@
-const {Sequelize, DataTypes, Model} = require("sequelize");
-const sequelize = require("../utils/connection"); 
-
-class PriceLog extends Model {};
-
-PriceLog.init({
-    date: {
-        type: DataTypes.DATE
-    },
-    rate_per_unit: {
-        type: DataTypes.INTEGER,
-        allowNull: false
+'use strict';
+const {
+  Model
+} = require('sequelize');
+module.exports = (sequelize, DataTypes) => {
+  class PriceLog extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate({ Batch }) {
+      // define association here
+      this.belongsTo(Batch, {foreignKey: 'unit_id'});
     }
-},
-    {
-    sequelize, 
+  }
+  PriceLog.init({
+    date: DataTypes.DATE,
+    unit_id: {
+      type:DataTypes.STRING,
+      allowNull:false
+    },
+    price_per_unit: DataTypes.INTEGER
+  }, {
+    sequelize,
+    tableName: 'pricelogs', 
     modelName: 'PriceLog',
-    tableName: 'PriceLogs'
-})
-
-module.exports = PriceLog; 
-
-
+  });
+  return PriceLog;
+};

@@ -3,29 +3,37 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class FeedConsumptionLog extends Model {
+  class Transaction extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({ Batch }) {
+    static associate({ Request, Batch}) {
       // define association here
+      this.belongsTo(Request, {foreignKey: 'order_id'});
       this.belongsTo(Batch, {foreignKey: 'unit_id'})
     }
   }
-  FeedConsumptionLog.init({
-    date: DataTypes.DATE,
+  Transaction.init({
+    transaction_id: {
+      type: DataTypes.STRING,
+      primaryKey: true
+    },
+    order_id: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
     unit_id: {
       type: DataTypes.STRING,
       allowNull:false
     },
-    rate: DataTypes.INTEGER,
-    cost_per_gram: DataTypes.INTEGER
+    no_of_units: DataTypes.INTEGER,
+    rate_per_unit: DataTypes.INTEGER
   }, {
     sequelize,
-    tableName: 'feedconsumptionlogs', 
-    modelName: 'FeedConsumptionLog',
+    tableName: 'transactions', 
+    modelName: 'Transaction',
   });
-  return FeedConsumptionLog;
+  return Transaction;
 };
