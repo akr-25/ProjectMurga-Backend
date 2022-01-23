@@ -16,7 +16,7 @@ module.exports = function(passport){
       const [user, created] = await User.findOrCreate({
         where: { email: profile.email },
         defaults: {
-          user_id: "2",
+          user_id: "3",
           first_name: profile.name.givenName,
           last_name: profile.name.familyName,
           contact_no:"7033993399"
