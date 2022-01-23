@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "root",
-    "password": "Password@123",
+    "password": "Dr0w&&aP",
     "database": "project_murga_dev_db",
     "host": "127.0.0.1",
     "dialect": "mysql"
