@@ -1,6 +1,6 @@
 const express = require('express');
 let router = express.Router();
-const authCheck = require('./authCheckMiddleware/checkAuth');
+const authCheck = require('../middleware/checkAuth');
 
 
 router.get("/", authCheck,  (req, res) => {

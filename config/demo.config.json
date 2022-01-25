@@ -1,7 +1,7 @@
 {
     "development": {
-        "username": "root",
-        "password": "yagamiL@6029",
+        "username": null,
+        "password": null,
         "database": "farmDB_e",
         "host": "localhost",
         "dialect": "mysql"
@@ -10,6 +10,7 @@
         "username": null,
         "password": null,
         "database": "database_test",
+        "logging": false,
         "host": "127.0.0.1",
         "dialect": "mysql"
     },
