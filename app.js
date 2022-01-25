@@ -1,27 +1,44 @@
-const express = require('express');
 require('dotenv').config();
+
+const express = require('express')
+const app = express()
 const morgan = require('morgan');
 const cors = require('cors');
 const helmet = require('helmet');
-const { sequelize } = require('./models');
-
-const app = express();
-
-app.use(morgan('dev'));
-app.use(cors());
-app.use(helmet());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+const session = require('express-session')
+const { sequelize, User } = require('./models');
+const passport = require('passport')
+const passportConfig = require('./passportConfig/passport.js');
+let RedisStore = require('connect-redis')(session);
+const redisClient = require('./redisConfig/redisConfig.js')
+const bodyParser = require('body-parser');
 
 
-const server = app.listen(process.env.PORT || 3000, async () => {
-    console.log(`Server is running on http://localhost:${server.address().port}`);
-    try {
-        await sequelize.authenticate();
-        await sequelize.sync();
-        console.log("Database connected");
-    }
-    catch (err) {
-        console.log(err);
-    }
-})
+app.set('view engine', 'ejs');
+
+//Middleware
+app.use(session({
+    secret: "secret",
+    store: new RedisStore({ client: redisClient}),
+    resave: false ,
+    saveUninitialized: true ,
+}))
+
+// init passport on every route call
+app.use(passport.initialize()) 
+//allow passport to use "express-session"
+app.use(passport.session())
+
+
+app.listen(3001, () => console.log(`Server started on port 3001...`))
+
+
+
+
+//require Routes
+const auth = require('./routes/auth');
+const dashboard = require('./routes/dashboard');
+
+app.use("/auth", auth);
+app.use("/dashboard", dashboard);
+
