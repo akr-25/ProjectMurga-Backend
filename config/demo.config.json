@@ -1,9 +1,9 @@
 {
     "development": {
-        "username": null,
-        "password": null,
-        "database": "project_murga_dev_db",
-        "host": "127.0.0.1",
+        "username": "root",
+        "password": "yagamiL@6029",
+        "database": "farmDB_e",
+        "host": "localhost",
         "dialect": "mysql"
     },
     "test": {
