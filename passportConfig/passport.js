@@ -1,5 +1,6 @@
 const passport = require('passport');
 const googleStrategy = require('./googleStrategyClass.js');
+const localStrategy = require('./localStrategyClass.js');
 const { sequelize, User } = require('../models');
 
 passport.serializeUser( (user, done) => { 
@@ -21,3 +22,4 @@ passport.deserializeUser((user_id, done) => {
 }) 
 
 passport.use("google", googleStrategy)
+passport.use("local", localStrategy)
