@@ -39,6 +39,7 @@ router.post('/login', (req, res, next) => {
 
 router.get("/status", (req, res) => {
   console.log(req.user);
+  res.send(user);
 });
 
 router.post("/logout", (req, res) => {
