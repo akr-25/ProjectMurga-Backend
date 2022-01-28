@@ -39,7 +39,7 @@ const server = app.listen(process.env.PORT || 3001, async () => {
     await sequelize.authenticate();
     await sequelize.sync();
     console.log("Database connected");
-  } catch (err) {
+  } catch (err) { 
     console.log(err);
   }
 });

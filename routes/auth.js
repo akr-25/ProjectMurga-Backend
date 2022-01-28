@@ -14,10 +14,11 @@ router.get(
   })
 );
 
+
 router.get(
   "/google/callback",
   passport.authenticate("google", {
-    successRedirect: "/dashboard",
+    successRedirect: "http://localhost:3000/",
     failureRedirect: "/login",
   })
 );
@@ -37,9 +38,14 @@ router.post('/login', (req, res, next) => {
   })(req, res, next);
 });
 
-router.get("/status", (req, res) => {
+router.get("/status",  (req, res) => {
   console.log(req.user);
-  res.send(req.user);
+  if(!req.user){
+    res.send({auth: false})
+  }
+  else{
+    res.send({auth: true, user: req.user})
+  }
 });
 
 router.post("/logout", (req, res) => {
