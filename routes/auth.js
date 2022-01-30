@@ -18,8 +18,8 @@ router.get(
 router.get(
   "/google/callback",
   passport.authenticate("google", {
-    successRedirect: "http://localhost:3000/",
-    failureRedirect: "/login",
+    successRedirect: 'http://localhost:3000/',
+    failureRedirect: '/auth/login'
   })
 );
 
@@ -44,14 +44,14 @@ router.get("/status",  (req, res) => {
     res.send({auth: false})
   }
   else{
-    res.send({auth: true, user: req.user})
+    res.send({auth: true, user: req.user}) // Don't give every info of user. 
   }
 });
 
-router.post("/logout", (req, res) => {
+router.get("/logout", (req, res) => {
   req.logOut();
   req.session.destroy();
-  res.redirect("/auth/login");
+  res.redirect("http://localhost:3000/");
 });
 
 module.exports = router;
