@@ -1,0 +1,4 @@
+node_modules/
+migrations/
+.env
+config/config.json
