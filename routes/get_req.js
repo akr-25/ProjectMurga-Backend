@@ -12,5 +12,7 @@ router.get('/' , async(req, res) => {
     Request.findAll()
     .then(gigs => console.log(gigs))
     .catch(e => console.log(e));
+
+    res.end();
 })
 module.exports = router;
