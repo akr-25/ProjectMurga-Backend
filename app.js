@@ -35,7 +35,7 @@ app.use("/auth", require('./routes/auth'));
 app.use("/dashboard", require('./routes/dashboard'));
 app.use("/", require('./routes/index'));
 app.use("/add", require('./routes/add'));
-app.use("/pre", require('./routes/get_req'));
+app.use("/pre", require('./routes/fetch'));
 
 
 

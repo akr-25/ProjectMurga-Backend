@@ -46,6 +46,7 @@ router.get("/status", (req, res) => {
     res.send({ auth: true, user: req.user }) //TODO: Don't give every info of user. 
   }
 });
+
 router.get("/logout", (req, res) => { //!FIX: Should be a post request, not working with post
   req.logOut();
   req.session.destroy();

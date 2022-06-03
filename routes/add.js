@@ -5,7 +5,7 @@ const db = require('../database/mysql');
 
 const Sequelize = require('sequelize');
 const { sequelize } = require('../models');
-const { Request, User } = require('../models');
+const { Request, User, FeedConsumptionLog, PriceLog } = require('../models');
 const Op = Sequelize.Op;
 
 
@@ -54,6 +54,7 @@ router.post('/user', async (req, res) => {
 
 
 })
+
 router.post('/req', async (req, res) => {
     const { request_id, applicant_id, approval, type_of_unit, req_no_of_units, order_type } = req.body;
     try {
@@ -64,7 +65,33 @@ router.post('/req', async (req, res) => {
         console.log(err);
         return res.status(500).json(err)
     }
-
-
 })
+
+router.post('/feedConsumption', async (req, res) =>{
+    const {date, unit_id, rate, cost_per_gram} = req.body; 
+
+    try {
+        const feedConsumption = FeedConsumptionLog.create({date, unit_id, rate, cost_per_gram})
+        return res.json(feedConsumption); 
+    }
+    catch(err){
+        console.log(err)
+        return res.status(500).json(err) 
+    }
+})
+
+router.post('/priceLog', async (req, res) =>{
+    const {date, unit_id, price_per_unit} = req.body; 
+
+    try {
+        const priceLog = PriceLog.create({date, unit_id, price_per_unit})
+        return res.json(priceLog); 
+    }
+    catch(err){
+        console.log(err)
+        return res.status(500).json(err) 
+    }
+})
+
+
 module.exports = router;
