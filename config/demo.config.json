@@ -2,9 +2,10 @@
     "development": {
         "username": null,
         "password": null,
-        "database": "farmDB_e",
+        "database": "farmDB",
         "host": "localhost",
-        "dialect": "mysql"
+        "dialect": "mysql",
+        "logging": false
     },
     "test": {
         "username": null,
