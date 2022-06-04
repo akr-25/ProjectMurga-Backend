@@ -5,7 +5,7 @@ const db = require('../database/mysql');
 
 const Sequelize = require('sequelize');
 const { sequelize } = require('../models');
-const { Request, User, FeedConsumptionLog, PriceLog } = require('../models');
+const { Request, User, FeedConsumptionLog, PriceLog ,Batch} = require('../models');
 const { where } = require('sequelize');
 const Op = Sequelize.Op;
 
@@ -70,10 +70,11 @@ router.post('/req', async (req, res) => {
 })
 
 router.post('/feedConsumption', async (req, res) =>{
-    const {date, unit_id, rate, cost_per_gram} = req.body; 
+    //const {date, unit_id, rate, cost_per_gram} = req.body; 
 
     try {
-        const feedConsumption = FeedConsumptionLog.create({date, unit_id, rate, cost_per_gram})
+        const batch = await Batch.findOne({where : {batch_id:req.body.unit_id}})
+        const feedConsumption = await batch.createFeedConsumptionLog(req.body)
         return res.json(feedConsumption); 
     }
     catch(err){
@@ -83,10 +84,11 @@ router.post('/feedConsumption', async (req, res) =>{
 })
 
 router.post('/priceLog', async (req, res) =>{
-    const {date, unit_id, price_per_unit} = req.body; 
+   // const {date, unit_id, price_per_unit} = req.body; 
 
     try {
-        const priceLog = PriceLog.create({date, unit_id, price_per_unit})
+        const batch = await Batch.findOne({where : {batch_id:req.body.unit_id}})
+        const priceLog = await batch.createPriceLog(req.body)
         return res.json(priceLog); 
     }
     catch(err){
@@ -94,6 +96,31 @@ router.post('/priceLog', async (req, res) =>{
         return res.status(500).json(err) 
     }
 })
-
+router.post('/balanceLogs', async (req, res) =>{
+    // const {date, unit_id, net_balance_type1,net_balance_type2,type_of_change} = req.body; 
+ 
+     try {
+         const batch = await Batch.findOne({where : {batch_id:req.body.unit_id}})
+         const balanceLog = await batch.createBalanceLog(req.body)
+         return res.json(balanceLog); 
+     }
+     catch(err){
+         console.log(err)
+         return res.status(500).json(err) 
+     }
+ })
+//  router.post('/createBatch', async (req, res) =>{
+//     // const {date, unit_id, net_balance_type1,net_balance_type2,type_of_change} = req.body; 
+ 
+//      try {
+//          const batch = await Batch.create(req.body)
+//         // const balanceLog = await batch.createBatch(req.body)
+//          return res.json(batch); 
+//      }
+//      catch(err){
+//          console.log(err)
+//          return res.status(500).json(err) 
+//      }
+//  })
 
 module.exports = router;
