@@ -42,13 +42,9 @@ router.post('/login', (req, res, next) => {
 });
 
 router.get("/status", (req, res) => {
-<<<<<<< HEAD
  // res.set('Access-Control-Allow-Origin', '*')
   console.log(req.user);
   
-=======
-  console.log(req.user);
->>>>>>> c87249011b5caa616b5278245a9a92974d1eced8
   res.send(req.user);
 });
 
