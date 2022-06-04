@@ -51,7 +51,7 @@ router.post('/transaction', async(req, res) => {
     }  
 })
 
-router.post('/feedConsumption', async (req, res) =>{
+router.post('/feedConsumptionLog', async (req, res) =>{
     //const {date, unit_id, rate, cost_per_gram} = req.body; 
 
     try {
@@ -82,7 +82,7 @@ router.post('/priceLog', async (req, res) =>{
     }
 })
 
-router.post('/balanceLogs', async (req, res) =>{
+router.post('/balanceLog', async (req, res) =>{
     // const {date, unit_id, net_balance_type1,net_balance_type2,type_of_change} = req.body; 
  
      try {

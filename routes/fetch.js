@@ -5,7 +5,7 @@ const db = require('../database/mysql');
 
 const Sequelize = require('sequelize');
 const { sequelize } = require('../models');
-const {Request, User, Transaction, Batch, PriceLog} = require('../models');
+const {Request, User, Transaction, Batch, PriceLog, FeedConsumptionLog, BalanceLog } = require('../models');
 const Op = Sequelize.Op;
 
 router.get('/request' , async(req, res) => {
@@ -24,14 +24,48 @@ router.get('/request' , async(req, res) => {
     }
 })
 
-router.get('/priceLogs', async(req, res) =>{
-    //! untested code below, remove comment after testing
+router.get('/batch/transaction' , async(req, res) => {
+    const {batch_id} = req.body; 
+
+    try{
+        const transaction  = await Batch.findOne({
+            where: {batch_id : batch_id}, 
+            include: Transaction
+        })
+        res.send(transaction)
+    }
+    catch(err){
+        console.log(err)
+        return res.status(500).json(err) 
+    }
+})
+
+router.get('/request/transaction' , async(req, res) => {
+    const {request_id} = req.body; 
+
+    try{
+        const transaction  = await Request.findOne({
+            where: {request_id : request_id}, 
+            include: Transaction
+        })
+        res.send(transaction)
+    }
+    catch(err){
+        console.log(err)
+        return res.status(500).json(err) 
+    }
+})
+
+
+router.get('/priceLog', async(req, res) =>{
+    //! remove comment after testing integration with frontend
+    
+    // send the start date from frontend with proper type
 
     const {start} = req.body; 
 
     try{
         const pricelogs = await PriceLog.findAll({
-            model: PriceLog, 
             where: {
                 date : {
                     [Op.gte] : start 
@@ -48,14 +82,16 @@ router.get('/priceLogs', async(req, res) =>{
     }
 })
 
-router.get('/feedConsumptionLogs', async(req, res) =>{
-    //! untested code below, remove comment after testing
+
+router.get('/feedConsumptionLog', async(req, res) =>{
+    //! remove comment after testing integration with frontend
+    
+    // send the start date from frontend with proper type
 
     const {start} = req.body; 
 
     try{
-        const pricelogs = await PriceLog.findAll({
-            model: PriceLog, 
+        const feedlogs = await FeedConsumptionLog.findAll({ 
             where: {
                 date : {
                     [Op.gte] : start 
@@ -63,13 +99,39 @@ router.get('/feedConsumptionLogs', async(req, res) =>{
                 } 
             }
         })
-        
-        res.send(pricelogs)
+
+        res.send(feedlogs)
     }
     catch(err){
         console.log(err)
         return res.status(500).json(err) 
     }
 })
+
+router.get('/balanceLog', async(req, res) =>{
+    //! remove comment after testing integration with frontend
+    
+    // send the start date from frontend with proper type
+
+    const {start} = req.body; 
+
+    try{
+        const balancelogs = await BalanceLog.findAll({ 
+            where: {
+                date : {
+                    [Op.gte] : start 
+                    // all pricelogs such that pricelogs.date >= start
+                } 
+            }
+        })
+
+        res.send(balancelogs)
+    }
+    catch(err){
+        console.log(err)
+        return res.status(500).json(err) 
+    }
+})
+
 
 module.exports = router;
