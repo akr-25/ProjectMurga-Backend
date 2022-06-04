@@ -9,11 +9,14 @@ const {Request, User, Transaction } = require('../models');
 const Op = Sequelize.Op;
 
 router.get('/request' , async(req, res) => {
-    Request.findAll()
-    .then(gigs => console.log(gigs))
-    .catch(e => console.log(e));
-
-    res.end();
+    try{
+        const request  = await Request.findAll()
+        res.send(request)
+    }
+    catch(err){
+        console.log(err)
+        return res.status(500).json(err) 
+    }
 })
 
 router.get('/transaction', async(req, res) =>{

@@ -6,6 +6,7 @@ const db = require('../database/mysql');
 const Sequelize = require('sequelize');
 const { sequelize } = require('../models');
 const { Request, User, FeedConsumptionLog, PriceLog } = require('../models');
+const { where } = require('sequelize');
 const Op = Sequelize.Op;
 
 
@@ -38,28 +39,29 @@ router.get('/', (req, res) => {
     })
         .then(gig => res.redirect('/'))
         .catch(e => console.log(e));
-
 });
 
+
 router.post('/user', async (req, res) => {
-    const { user_id, first_name, last_name, contact_no, email, password } = req.body;
+    // { user_id, first_name, last_name, contact_no, email, password } = req.body;
     try {
-        const user = await User.create({ user_id, first_name, last_name, contact_no, email, password })
-        return res.json(user)
+        const user = await User.create(req.body); 
+        // console.log(user) 
+        return res.json(user);
     }
     catch (err) {
         console.log(err);
         return res.status(500).json(err)
     }
-
-
 })
 
 router.post('/req', async (req, res) => {
-    const { request_id, applicant_id, approval, type_of_unit, req_no_of_units, order_type } = req.body;
+    // const { user_id } = req.body;
+    // const {applicant_id} = req.body;  
     try {
-        const requ = await Request.create({ request_id, applicant_id, approval, type_of_unit, req_no_of_units, order_type })
-        return res.json(requ)
+        const user = await User.findOne({where: {user_id : req.body.applicant_id}});
+        const request = await user.createRequest(req.body); 
+        res.end(); 
     }
     catch (err) {
         console.log(err);
