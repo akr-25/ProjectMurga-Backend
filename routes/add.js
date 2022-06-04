@@ -98,7 +98,7 @@ router.post('/balanceLog', async (req, res) =>{
  })
 
  router.post('/batch', async (req, res) =>{
-    // const {batch_id} = req.body; 
+    // const { batch_id, is_active } = req.body; 
  
      try {
          const batch = await Batch.create(req.body)

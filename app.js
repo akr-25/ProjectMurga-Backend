@@ -38,8 +38,6 @@ app.use("/add", require('./routes/add'));
 app.use("/fetch", require('./routes/fetch'));
 
 
-
-
 const server = app.listen(process.env.PORT || 3001, async () => {
   console.log(`Server is running on http://localhost:${server.address().port}`);
   try {

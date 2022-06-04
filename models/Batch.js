@@ -21,6 +21,11 @@ module.exports = (sequelize, DataTypes) => {
     batch_id: {
       type:DataTypes.STRING,
       primaryKey:true
+    },
+    is_active: {
+      // expects Y/N
+      type:DataTypes.STRING(1), 
+      allowNull: false 
     }
   }, {
     sequelize,
