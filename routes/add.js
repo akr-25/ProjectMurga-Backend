@@ -42,6 +42,6 @@ router.post(
   SchemaValidator("balancelog_schema"),
   addBalanceLog
 );
-router.post("/createBatch", SchemaValidator("batch_schema"), addBatch);
+router.post("/batch", SchemaValidator("batch_schema"), addBatch);
 
 module.exports = router;
