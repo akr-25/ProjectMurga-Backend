@@ -1,6 +1,9 @@
+// FOR RUNNING THIS SCRIPT PLEASE CONFIRM THAT '.env' FILE WITH COMPLETE CONFIG IS 
+// AVAILABLE IN THE DATABASE DIRECTORY
+
 const { sequelize } = require("../models");
 
-require("dotenv").config();
+// require("dotenv").config();
 
 (async () => {
   try {

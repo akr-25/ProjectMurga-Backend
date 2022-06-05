@@ -6,7 +6,7 @@ const Sequelize = require("sequelize");
 const basename = path.basename(__filename);
 const db = {};
 
-require("dotenv").config();
+// require("dotenv").config();
 
 const { sequelize } = require("../database/mysql");
 
