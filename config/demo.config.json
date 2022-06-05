@@ -2,7 +2,7 @@
     "development": {
         "username": null,
         "password": null,
-        "database": "farmDB",
+        "database": "murga_db",
         "host": "localhost",
         "dialect": "mysql",
         "logging": false

@@ -35,10 +35,19 @@ app.use("/auth", require('./routes/auth'));
 app.use("/dashboard", require('./routes/dashboard'));
 app.use("/", require('./routes/index'));
 app.use("/add", require('./routes/add'));
-app.use("/pre", require('./routes/get_req'));
+app.use("/pre", require('./routes/fetch'));
 
 
-
+//* Error Handler
+app.use((err, req, res, next) => {
+  res.status(err.status || 500);
+  res.json({
+      error: {
+          status: err.status || 500,
+          message: err.message
+      }
+  })
+});
 
 const server = app.listen(process.env.PORT || 3001, async () => {
   console.log(`Server is running on http://localhost:${server.address().port}`);
@@ -46,7 +55,7 @@ const server = app.listen(process.env.PORT || 3001, async () => {
     await sequelize.authenticate();
     await sequelize.sync();
     console.log("Database connected");
-  } catch (err) {
+  } catch (err) { 
     console.log(err);
   }
 });
