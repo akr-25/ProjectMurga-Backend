@@ -11,94 +11,120 @@ const { userSchema } = require("../Validators/userSchema.js");
 const Joi = require("joi");
 module.exports = {
   addTransaction: async (req, res) => {
-    // { transaction_id, order_id, unit_id, no_of_units, rate_per_unit}
     try {
       const request = await Request.findOne({ where: req.body.order_id });
       const transaction = await request.createTransaction(req.body);
-      res.end();
+      return res.send({
+        error: null,
+        message: "success",
+        data: { transaction },
+      });
     } catch (err) {
       console.log(err);
-      return res.status(500).json(err);
-      // return res.status(errstatus).json(err)
+      return res
+        .status(500)
+        .send({ error: err, message: "failure", data: null });
     }
   },
+
   addUser: async (req, res) => {
     // { user_id, first_name, last_name, contact_no, email, password } = req.body;
     try {
-      //const resu = await userSchema.validateAsync(req.body);
-      // console.log(resu);
       const user = await User.create(req.body);
-      return res.json(user);
+      return res.send({ error: null, message: "success", data: { user } });
     } catch (err) {
-      return res.status(500).json(err);
+      console.log(err);
+      return res
+        .status(500)
+        .send({ error: err, message: "failure", data: null });
     }
   },
   addRequest: async (req, res) => {
-    // const { user_id } = req.body;
-    // const {applicant_id} = req.body;
     try {
       const user = await User.findOne({
         where: { user_id: req.body.applicant_id },
       });
       const request = await user.createRequest(req.body);
-      res.end();
+      return res.send({ error: null, message: "success", data: { request } });
     } catch (err) {
       console.log(err);
-      return res.status(500).json(err);
+      return res
+        .status(500)
+        .send({ error: err, message: "failure", data: null });
     }
   },
-  addFeedConsumption: async (req, res) => {
-    //const {date, unit_id, rate, cost_per_gram} = req.body;
 
+  addFeedConsumption: async (req, res) => {
+    //TODO -- we should not be able to insert into inactive batches, i'll write code after controllers are merged
     try {
       const batch = await Batch.findOne({
         where: { batch_id: req.body.unit_id },
       });
       const feedConsumption = await batch.createFeedConsumptionLog(req.body);
-      return res.json(feedConsumption);
+      return res.send({
+        error: null,
+        message: "success",
+        data: { feedConsumption },
+      });
     } catch (err) {
       console.log(err);
-      return res.status(500).json(err);
+      return res
+        .status(500)
+        .send({ error: err, message: "failure", data: null });
     }
   },
+
   addPriceLog: async (req, res) => {
-    // const {date, unit_id, price_per_unit} = req.body;
+    //TODO -- we should not be able to insert into inactive batches, i'll write code after controllers are merged
+
+    //? C-001 --> C-002 ?
 
     try {
       const batch = await Batch.findOne({
         where: { batch_id: req.body.unit_id },
       });
       const priceLog = await batch.createPriceLog(req.body);
-      return res.json(priceLog);
+      return res.send({ error: null, message: "success", data: { priceLog } });
     } catch (err) {
       console.log(err);
-      return res.status(500).json(err);
+      return res
+        .status(500)
+        .send({ error: err, message: "failure", data: null });
     }
   },
+
   addBalanceLog: async (req, res) => {
-    // const {date, unit_id, net_balance_type1,net_balance_type2,type_of_change} = req.body;
+    //TODO -- we should not be able to insert into inactive batches, i'll write code after controllers are merged
 
     try {
       const batch = await Batch.findOne({
         where: { batch_id: req.body.unit_id },
       });
       const balanceLog = await batch.createBalanceLog(req.body);
-      return res.json(balanceLog);
+      return res.send({
+        error: null,
+        message: "success",
+        data: { balanceLog },
+      });
     } catch (err) {
       console.log(err);
-      return res.status(500).json(err);
+      return res
+        .status(500)
+        .send({ error: err, message: "failure", data: null });
     }
   },
+
   addBatch: async (req, res) => {
-    // const {date, unit_id, net_balance_type1,net_balance_type2,type_of_change} = req.body;
+    //TODO -- update batch model add default to is_active
 
     try {
       const batch = await Batch.create(req.body);
-      // const balanceLog = await batch.createBatch(req.body)
-      return res.json(batch);
+      return res.send({ error: null, message: "success", data: { batch } });
     } catch (err) {
       console.log(err);
-      return res.status(500).json(err);
+      return res
+        .status(500)
+        .send({ error: err, message: "failure", data: null });
     }
   },
 };

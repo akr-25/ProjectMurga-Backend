@@ -30,7 +30,7 @@ router.post(
   addTransaction
 );
 router.post("/user", SchemaValidator("user_schema"), addUser);
-router.post("/req", SchemaValidator("request_schema"), addRequest);
+router.post("/request", SchemaValidator("request_schema"), addRequest);
 router.post(
   "/feedConsumption",
   SchemaValidator("feedconsumption_schema"),

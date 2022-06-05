@@ -20,18 +20,16 @@ module.exports = (sequelize, DataTypes) => {
       this.hasMany(BalanceLog, { foreignKey: "unit_id" });
     }
   }
-  Batch.init(
-    {
-      batch_id: {
-        type: DataTypes.STRING,
-        primaryKey: true,
-      },
+  Batch.init({
+    batch_id: {
+      type: DataTypes.STRING,
+      primaryKey: true,
     },
-    {
-      sequelize,
-      tableName: "batches",
-      modelName: "Batch",
-    }
-  );
+    is_active: {
+      // expects Y/N
+      type: DataTypes.STRING(1),
+      allowNull: false,
+    },
+  });
   return Batch;
 };

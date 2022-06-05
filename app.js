@@ -37,7 +37,7 @@ app.use("/auth", require("./routes/auth"));
 app.use("/dashboard", require("./routes/dashboard"));
 app.use("/", require("./routes/index"));
 app.use("/add", require("./routes/add"));
-app.use("/pre", require("./routes/fetch"));
+app.use("/fetch", require("./routes/fetch"));
 
 //* Error Handler
 app.use((err, req, res, next) => {
