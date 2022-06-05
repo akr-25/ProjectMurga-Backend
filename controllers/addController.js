@@ -1,30 +1,34 @@
 const express = require('express')
 const { Request, User, FeedConsumptionLog, PriceLog ,Batch} = require('../models');
 const { where } = require('sequelize');
-
+const {userSchema} = require('../Validators/userSchema.js')
+const Joi = require('joi')
 module.exports = {
-    addTransanction :async(req, res) => {
+    addTransaction :async(req, res) => {
         // { transaction_id, order_id, unit_id, no_of_units, rate_per_unit}
         try {
+           
             const request = await Request.findOne({where: req.body.order_id})
             const transaction = await request.createTransaction(req.body)
             res.end() 
         } 
         catch(err){
-            console.log(err)
-            return res.status(500).json(err) 
+            console.log(err);
+            return res.status(500).json(err)
+           // return res.status(errstatus).json(err) 
         }  
     },
     addUser: async (req, res) => {
         // { user_id, first_name, last_name, contact_no, email, password } = req.body;
         try {
+            //const resu = await userSchema.validateAsync(req.body);
+            // console.log(resu);
             const user = await User.create(req.body); 
-            // console.log(user) 
             return res.json(user);
         }
         catch (err) {
-            console.log(err);
-            return res.status(500).json(err)
+            
+            return res.status(500).json(err) 
         }
     },
     addRequest :async (req, res) => {
