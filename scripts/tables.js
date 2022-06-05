@@ -1,5 +1,6 @@
 const { sequelize } = require('../models');
-require('dotenv').config();
+
+require("dotenv").config(); 
 
 (async () => {
     try {
