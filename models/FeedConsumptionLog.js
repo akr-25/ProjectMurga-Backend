@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class FeedConsumptionLog extends Model {
     /**
@@ -11,21 +9,24 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate({ Batch }) {
       // define association here
-      this.belongsTo(Batch, {foreignKey: 'unit_id'})
+      this.belongsTo(Batch, { foreignKey: "unit_id" });
     }
   }
-  FeedConsumptionLog.init({
-    date: DataTypes.DATE,
-    unit_id: {
-      type: DataTypes.STRING,
-      allowNull:false
+  FeedConsumptionLog.init(
+    {
+      date: DataTypes.DATE,
+      unit_id: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      rate: DataTypes.INTEGER,
+      cost_per_gram: DataTypes.INTEGER,
     },
-    rate: DataTypes.INTEGER,
-    cost_per_gram: DataTypes.INTEGER
-  }, {
-    sequelize,
-    tableName: 'feedconsumptionlogs', 
-    modelName: 'FeedConsumptionLog',
-  });
+    {
+      sequelize,
+      tableName: "feedconsumptionlogs",
+      modelName: "FeedConsumptionLog",
+    }
+  );
   return FeedConsumptionLog;
 };

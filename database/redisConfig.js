@@ -31,7 +31,6 @@ try {
       maxAge: 1000 * 1000 * 60 * 60 * 24, // session max age in milliseconds, currently 24 hours
     },
   });
-
 } catch (err) {
   console.log(err);
 }

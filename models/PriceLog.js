@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class PriceLog extends Model {
     /**
@@ -11,20 +9,23 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate({ Batch }) {
       // define association here
-      this.belongsTo(Batch, {foreignKey: 'unit_id'});
+      this.belongsTo(Batch, { foreignKey: "unit_id" });
     }
   }
-  PriceLog.init({
-    date: DataTypes.DATE,
-    unit_id: {
-      type:DataTypes.STRING,
-      allowNull:false
+  PriceLog.init(
+    {
+      date: DataTypes.DATE,
+      unit_id: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      price_per_unit: DataTypes.INTEGER,
     },
-    price_per_unit: DataTypes.INTEGER
-  }, {
-    sequelize,
-    tableName: 'pricelogs', 
-    modelName: 'PriceLog',
-  });
+    {
+      sequelize,
+      tableName: "pricelogs",
+      modelName: "PriceLog",
+    }
+  );
   return PriceLog;
 };

@@ -1,52 +1,53 @@
-require('dotenv').config();
+require("dotenv").config();
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 const helmet = require("helmet");
 const { sequelize } = require("./models");
-const passport = require('passport')
+const passport = require("passport");
 
 // importing this for its side effects only, which is to configure passport
 require("./passportConfig/passport.js");
 
-const { redisSession } = require('./database/redisConfig');
+const { redisSession } = require("./database/redisConfig");
 
 const app = express();
-app.set('view engine', 'ejs');
+app.set("view engine", "ejs");
 
 //Middleware
 app.use(redisSession);
 // init passport on every route call
-app.use(passport.initialize())
+app.use(passport.initialize());
 //allow passport to use "express-session"
-app.use(passport.session())
+app.use(passport.session());
 
 app.use(morgan("dev"));
-app.use(cors({
-  origin: "http://localhost:3000",
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
 app.use(helmet());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Routes
-app.use("/auth", require('./routes/auth'));
-app.use("/dashboard", require('./routes/dashboard'));
-app.use("/", require('./routes/index'));
-app.use("/add", require('./routes/add'));
-app.use("/pre", require('./routes/fetch'));
-
+app.use("/auth", require("./routes/auth"));
+app.use("/dashboard", require("./routes/dashboard"));
+app.use("/", require("./routes/index"));
+app.use("/add", require("./routes/add"));
+app.use("/pre", require("./routes/fetch"));
 
 //* Error Handler
 app.use((err, req, res, next) => {
   res.status(err.status || 500);
   res.json({
-      error: {
-          status: err.status || 500,
-          message: err.message
-      }
-  })
+    error: {
+      status: err.status || 500,
+      message: err.message,
+    },
+  });
 });
 
 const server = app.listen(process.env.PORT || 3001, async () => {
@@ -55,7 +56,7 @@ const server = app.listen(process.env.PORT || 3001, async () => {
     await sequelize.authenticate();
     await sequelize.sync();
     console.log("Database connected");
-  } catch (err) { 
+  } catch (err) {
     console.log(err);
   }
 });

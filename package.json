@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node app",
     "dev": "nodemon app",
-    "dev:table": "node ./scripts/tables.js"
+    "dev:table": "node ./scripts/tables.js",
+    "pretty": "npx prettier --write \"./**/*.js\""
   },
   "repository": {
     "type": "git",
