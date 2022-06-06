@@ -13,12 +13,17 @@ const {
 const { where } = require("sequelize");
 const {
   addRequest,
+  fetchRequestTransactions,
+  fetchRequestByUser,
 } = require("../controllers/request");
-const SchemaValidator = require("../middleware/SchemaValidator.js");
+const SchemaValidator = require("../middleware/schemaValidator.js");
 // const {userSchema} = require('../Validators/postSchema.js')
 // const validateRequest = SchemaValidator(true);
 
-router.post("/request/create", SchemaValidator("request_schema"), addRequest);
+router.get("/", fetchRequestByUser);
 
+router.post("/create", SchemaValidator("request_schema"), addRequest);
+
+router.get("/:id/transaction", fetchRequestTransactions);
 
 module.exports = router;

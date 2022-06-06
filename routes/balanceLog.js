@@ -13,8 +13,9 @@ const {
 const { where } = require("sequelize");
 const {
   addBalanceLog,
+  fetchBalanceLogs,
 } = require("../controllers/balanceLog");
-const SchemaValidator = require("../middleware/SchemaValidator.js");
+const SchemaValidator = require("../middleware/schemaValidator.js");
 // const {userSchema} = require('../Validators/postSchema.js')
 // const validateRequest = SchemaValidator(true);
 
@@ -23,5 +24,7 @@ router.post(
   SchemaValidator("balancelog_schema"),
   addBalanceLog
 );
+
+router.get("/balanceLog?", fetchBalanceLogs);
 
 module.exports = router;

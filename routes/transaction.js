@@ -11,10 +11,8 @@ const {
   Batch,
 } = require("../models");
 const { where } = require("sequelize");
-const {
-  addTransaction,
-} = require("../controllers/transaction");
-const SchemaValidator = require("../middleware/SchemaValidator.js");
+const { addTransaction } = require("../controllers/transaction");
+const SchemaValidator = require("../middleware/schemaValidator.js");
 // const {userSchema} = require('../Validators/postSchema.js')
 // const validateRequest = SchemaValidator(true);
 
@@ -23,6 +21,5 @@ router.post(
   SchemaValidator("transaction_schema"),
   addTransaction
 );
-
 
 module.exports = router;

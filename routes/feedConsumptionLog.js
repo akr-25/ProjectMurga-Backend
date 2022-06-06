@@ -13,13 +13,16 @@ const {
 const { where } = require("sequelize");
 const {
   addFeedConsumption,
+  fetchFeedConsumptionLogs,
 } = require("../controllers/feedConsumption");
-const SchemaValidator = require("../middleware/SchemaValidator.js");
+const SchemaValidator = require("../middleware/schemaValidator.js");
 
 router.post(
   "/feedConsumption/create",
   SchemaValidator("feedconsumption_schema"),
   addFeedConsumption
 );
+
+router.get("/feedConsumptionLog?", fetchFeedConsumptionLogs);
 
 module.exports = router;

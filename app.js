@@ -34,16 +34,16 @@ app.use(express.json());
 
 // Routes
 app.use("/auth", require("./routes/auth"));
+app.use("/api/balanceLog", require("./routes/balanceLog"));
+app.use("/api/feedConsumptionLog", require("./routes/feedConsumptionLog"));
+app.use("/api/priceLog", require("./routes/priceLog"));
+app.use("/api/transaction", require("./routes/transaction"));
+app.use("/api/batch", require("./routes/batch"));
+app.use("/api/user", require("./routes/user"));
+app.use("/api/request", require("./routes/request"));
+
 app.use("/dashboard", require("./routes/dashboard"));
 app.use("/", require("./routes/index"));
-app.use("/balanceLog", require("./routes/balanceLog"));
-app.use("/feedConsumptionLog", require("./routes/feedConsumptionLog"));
-app.use("/priceLog", require("./routes/priceLog"));
-app.use("/transaction", require("./routes/transaction"));
-app.use("/batch", require("./routes/batch"));
-app.use("/user", require("./routes/user"));
-app.use("/request", require("./routes/request"));
-// app.use("/fetch", require("./routes/fetch"));
 
 //* Error Handler
 app.use((err, req, res, next) => {
