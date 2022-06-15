@@ -1,14 +1,8 @@
-const express = require("express");
 const {
-  Request,
-  User,
   FeedConsumptionLog,
-  PriceLog,
   Batch,
 } = require("../models");
-const { where } = require("sequelize");
-const { userSchema } = require("../Validators/userSchema.js");
-const Joi = require("joi");
+
 module.exports = {
   addFeedConsumption: async (req, res) => {
     //TODO -- we should not be able to insert into inactive batches, i'll write code after controllers are merged

@@ -1,14 +1,11 @@
-const express = require("express");
 const {
-  Request,
-  User,
-  FeedConsumptionLog,
   PriceLog,
   Batch,
 } = require("../models");
-const { where } = require("sequelize");
-const { userSchema } = require("../Validators/userSchema.js");
-const Joi = require("joi");
+
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
+
 module.exports = {
   addPriceLog: async (req, res) => {
     //TODO -- we should not be able to insert into inactive batches, i'll write code after controllers are merged
@@ -35,12 +32,9 @@ module.exports = {
     // send the start date from frontend with proper type
     // expects --> http://localhost:3001/fetch/priceLog/date?start="04-05-2022"&end="06-05-2022"
 
-    const { from, to } = req.query;
-
-    if (to == null) {
-      to = new Date();
-      from = to.setMonth(to.getMonth() - 3);
-    }
+    var { from, to } = req.query;
+    
+    //* from & to have been checked in middleware, they DO NOT CONTAIN NULL values   
 
     try {
       const pricelogs = await PriceLog.findAll({
@@ -52,6 +46,7 @@ module.exports = {
             ],
 
             // all pricelogs such that [end >= pricelogs.date >= start]
+            
           },
         },
       });
@@ -60,7 +55,6 @@ module.exports = {
         .status(200)
         .send({ error: null, message: "success", data: { pricelogs } });
     } catch (err) {
-      console.log(err);
       return res
         .status(500)
         .send({ error: err, message: "failure", data: null });

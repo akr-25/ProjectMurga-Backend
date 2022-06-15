@@ -1,15 +1,4 @@
 const passport = require("passport");
-const express = require("express");
-const {
-  Request,
-  User,
-  FeedConsumptionLog,
-  PriceLog,
-  Batch,
-} = require("../models");
-const { where } = require("sequelize");
-const { userSchema } = require("../Validators/userSchema.js");
-const Joi = require("joi");
 
 module.exports = {
   status: (req, res) => {
@@ -29,11 +18,10 @@ module.exports = {
       // res.redirect(301, "/");
       // res.end();
       // return res.redirect(301, "/dashboard"); 
-      res.writeHead(302, {
-          Location: 'http://localhost:3000/'
-      });
-      res
-      .send({ error: null, message: "success", data: null });
+      // res.writeHead(302, {
+      //     Location: 'http://localhost:3000/'
+      // });
+      res.send({ error: null, message: "success", data: null });
       // res.redirect(301, "http:localhost:3000/auth/login"); //! temporarily
     }
     catch(err){

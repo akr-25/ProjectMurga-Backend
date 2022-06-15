@@ -1,14 +1,7 @@
-const express = require("express");
 const {
-  Request,
-  User,
-  FeedConsumptionLog,
-  PriceLog,
-  Batch,
+  Batch
 } = require("../models");
-const { where } = require("sequelize");
-const { userSchema } = require("../Validators/userSchema.js");
-const Joi = require("joi");
+
 module.exports = {
   addBatch: async (req, res) => {
     //TODO -- update batch model add default to is_active
@@ -46,7 +39,9 @@ module.exports = {
   },
 
   fetchBatch: async (req, res) => {
-    const { state } = req.query;
+    var { state } = req.query;
+
+    if(state == null) state = "Y"; 
 
     try {
       const batch = await Batch.findAll({

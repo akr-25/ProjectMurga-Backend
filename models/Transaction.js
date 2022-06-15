@@ -29,6 +29,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       no_of_units: DataTypes.INTEGER,
       rate_per_unit: DataTypes.INTEGER,
+      transaction_status: DataTypes.STRING(50)
     },
     {
       sequelize,

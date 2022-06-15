@@ -1,8 +1,8 @@
 const express = require("express");
 let router = express.Router();
-const authCheck = require("../middleware/checkAuth");
+const checkAuth = require("../middleware/checkAuth");
 
-router.get("/", authCheck, (req, res) => {
+router.get("/", checkAuth, (req, res) => {
   res.render("dashboard", { name: req.user.first_name });
 });
 

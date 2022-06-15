@@ -1,29 +1,18 @@
 const express = require("express");
 const router = express.Router();
-
-const db = require("../database/mysql");
-
-const {
-  Request,
-  User,
-  FeedConsumptionLog,
-  PriceLog,
-  Batch,
-} = require("../models");
-const { where } = require("sequelize");
 const {
   addBatch,
   fetchBatchTransactions,
   fetchBatch,
 } = require("../controllers/batch");
 const SchemaValidator = require("../middleware/schemaValidator.js");
-// const {userSchema} = require('../Validators/postSchema.js')
-// const validateRequest = SchemaValidator(true);
+const checkID = require("../middleware/checkID");
 
-router.post("/batch/create", SchemaValidator("batch_schema"), addBatch);
 
-router.get("/batch/:id/transaction", fetchBatchTransactions);
+router.post("/create", SchemaValidator("batch_schema"), addBatch);
 
-router.get("/batch?", fetchBatch);
+router.get("/:id/transaction", checkID, fetchBatchTransactions);
+
+router.get("/?", fetchBatch);
 
 module.exports = router;
