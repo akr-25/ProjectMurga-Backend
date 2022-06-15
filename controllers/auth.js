@@ -23,10 +23,23 @@ module.exports = {
 
   logout: (req, res) => {
     //!FIX: Should be a post request, not working with post
-    req.logOut();
-    req.session.destroy();
-    // res.redirect("http:localhost:3000/");
-    res.end();
+    try{
+      req.logOut();
+      req.session.destroy();
+      // res.redirect(301, "/");
+      // res.end();
+      // return res.redirect(301, "/dashboard"); 
+      res.writeHead(302, {
+          Location: 'http://localhost:3000/'
+      });
+      res
+      .send({ error: null, message: "success", data: null });
+      // res.redirect(301, "http:localhost:3000/auth/login"); //! temporarily
+    }
+    catch(err){
+      console.log(err); 
+      res.status(500)
+    }
   },
 
   login: (req, res, next) => {

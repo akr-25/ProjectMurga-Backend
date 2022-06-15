@@ -23,10 +23,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      approval: DataTypes.STRING(1),
-      type_of_unit: DataTypes.STRING(2),
+      order_status: DataTypes.STRING(50),
+      type_of_unit: DataTypes.STRING(20),
       req_no_of_units: DataTypes.INTEGER,
-      order_type: DataTypes.STRING(1),
+      order_type: DataTypes.STRING(10),
     },
     {
       sequelize,

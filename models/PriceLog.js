@@ -14,7 +14,10 @@ module.exports = (sequelize, DataTypes) => {
   }
   PriceLog.init(
     {
-      date: DataTypes.DATE,
+      date:{
+        type: DataTypes.DATE,
+        allowNull: false
+      },
       unit_id: {
         type: DataTypes.STRING,
         allowNull: false,

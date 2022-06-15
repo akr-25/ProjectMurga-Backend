@@ -14,7 +14,10 @@ module.exports = (sequelize, DataTypes) => {
   }
   FeedConsumptionLog.init(
     {
-      date: DataTypes.DATE,
+      date:{
+        type: DataTypes.DATE,
+        allowNull: false
+      },
       unit_id: {
         type: DataTypes.STRING,
         allowNull: false,
