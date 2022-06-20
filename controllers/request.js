@@ -3,17 +3,61 @@ const {
   User
 } = require("../models");
 
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
+
 module.exports = {
   addRequest: async (req, res) => {
     try {
       const user = await User.findOne({
-        where: { user_id: req.user.user_id },
+        where: { user_id: req.body.applicant_id },
       });
-      const request = await user.createRequest({
-        application_id: req.user.user_id,
-        ...req.body,
-      });
+      const request = await user.createRequest(req.body);
       return res.send({ error: null, message: "success", data: { request } });
+    } catch (err) {
+      console.log(err);
+      return res
+        .status(500)
+        .send({ error: err, message: "failure", data: null });
+    }
+  },
+
+  updateRequest: async (req, res) => {
+    try {
+      const request = await Request.update({order_status: req.body.order_status}, {
+        where: {request_id: req.body.request_id}
+      }); 
+      return res.send({ error: null, message: "success", data: { request } });
+    } catch (err) {
+      console.log(err);
+      return res
+        .status(500)
+        .send({ error: err, message: "failure", data: null });
+    }
+  },
+
+  fetchAllRequest: async (req, res) => {
+    //TODO remove comment after testing integration with frontend
+
+    // send the start date from frontend with proper type
+    // expects --> http://localhost:3001/fetch/balanceLog/date?start="04-05-2022"&end="06-05-2022"
+    const { from, to } = req.query;
+
+    try {
+      const requests = await Request.findAll({
+        where: {
+          updatedAt: {
+            [Op.and]: [
+              { [Op.gte]: Date.parse(from) },
+              { [Op.lte]: Date.parse(to) },
+            ],
+            // all pricelogs such that requests.date >= start
+          },
+        },
+      });
+      return res
+        .status(200)
+        .send({ error: null, message: "success", data: { requests } });
     } catch (err) {
       console.log(err);
       return res

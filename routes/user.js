@@ -4,6 +4,6 @@ const { addUser } = require("../controllers/user");
 const SchemaValidator = require("../middleware/schemaValidator.js");
 
 
-router.post("/create", SchemaValidator("user_schema"), addUser);
+router.post("/create", addUser);
 
 module.exports = router;
