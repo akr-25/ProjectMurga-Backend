@@ -14,11 +14,11 @@ const checkDate = require("../middleware/checkDate");
 
 router.get("/", checkAuth, fetchRequestByUser);
 
-router.get("/fetch/?", checkDate,  fetchAllRequest)
+router.get("/fetch/?", checkDate,  fetchAllRequest);
 
 router.post("/create", addRequest);
 
-router.post("/update", updateRequest)
+router.post("/update", updateRequest);
 
 router.get("/:id/transaction", checkID, fetchRequestTransactions);
 
