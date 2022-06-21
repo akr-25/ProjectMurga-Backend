@@ -27,6 +27,7 @@ module.exports = (sequelize, DataTypes) => {
       type_of_unit: DataTypes.STRING(20),
       req_no_of_units: DataTypes.INTEGER,
       order_type: DataTypes.STRING(10),
+      price: DataTypes.INTEGER
     },
     {
       sequelize,
