@@ -1,5 +1,6 @@
 const {
-  Batch
+  Batch, 
+  Transaction
 } = require("../models");
 const {incrementBatchID} = require("../utils/incrementBatchID");
 
@@ -50,7 +51,6 @@ module.exports = {
     try {
       const transaction = await Batch.findOne({
         where: { batch_id: id },
-        include: Transaction,
       });
       return res
         .status(200)

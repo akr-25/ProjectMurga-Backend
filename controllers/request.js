@@ -4,15 +4,19 @@ const {
 } = require("../models");
 
 const Sequelize = require('sequelize');
+const { incrementUserID } = require("../utils/incrementUserID");
 const Op = Sequelize.Op;
 
 module.exports = {
   addRequest: async (req, res) => {
+    const count = await Request.count(); 
+
+    const new_id = incrementUserID(count);  //! function ka naam change kr dena
     try {
       const user = await User.findOne({
         where: { user_id: req.body.applicant_id },
       });
-      const request = await user.createRequest(req.body);
+      const request = await user.createRequest({request_id: new_id, ...req.body});
 
       return res
       .status(200)
