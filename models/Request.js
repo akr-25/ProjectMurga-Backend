@@ -26,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       order_status: DataTypes.STRING(50),
       type_of_unit: DataTypes.STRING(20),
       req_no_of_units: DataTypes.INTEGER,
+      price: DataTypes.INTEGER, 
       order_type: DataTypes.STRING(10),
     },
     {

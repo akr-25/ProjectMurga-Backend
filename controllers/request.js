@@ -13,7 +13,10 @@ module.exports = {
         where: { user_id: req.body.applicant_id },
       });
       const request = await user.createRequest(req.body);
-      return res.send({ error: null, message: "success", data: { request } });
+
+      return res
+      .status(200)
+      .send({ error: null, message: "success", data: { request } });
     } catch (err) {
       console.log(err);
       return res
@@ -24,6 +27,8 @@ module.exports = {
 
   updateRequest: async (req, res) => {
     try {
+      console.log(req.body); 
+      
       const request = await Request.update({order_status: req.body.order_status}, {
         where: {request_id: req.body.request_id}
       }); 
@@ -88,7 +93,7 @@ module.exports = {
   fetchRequestByUser: async (req, res) => {
     try {
       const request = await User.findOne({
-        where: { user_id: req.user.user_id }, //TODO: Testing
+        where: { user_id: req.user_id }, //TODO: Testing
         include: Request,
       });
       return res
