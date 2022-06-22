@@ -26,9 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       unit_id: {
         type: DataTypes.STRING,
         allowNull: false,
-      },
-      no_of_units: DataTypes.INTEGER,
-      rate_per_unit: DataTypes.INTEGER
+      }
     },
     {
       sequelize,

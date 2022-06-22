@@ -1,22 +1,37 @@
 const {
-  Batch
+  Batch, 
+  Transaction
 } = require("../models");
-const {incrementBatchID} = require("../utils/incrementBatchID");
+const { getBatchCode } = require("../utils/getBatchCode");
+const { incrementID } = require("../utils/incrementID");
+const { Op } = require("sequelize");
 
 module.exports = {
   addBatch: async (req, res) => {
     try {
-      const count = await Batch.count(); 
-      
-      const id = incrementBatchID(count, req.body.type, req.body.sub_type); 
+      const {type, sub_type} = req.body; 
 
+      const batch_code = getBatchCode(type, sub_type); 
+      const search_code = String(batch_code + "%"); 
+
+      const count = await Batch.count(
+        {
+          where: {
+            batch_id: {[Op.like] : search_code }
+          }
+        }
+      ); 
+      
+      const new_id = String(batch_code + "-"+ incrementID(count)); 
+    
       const batch = await Batch.create({
-        batch_id : id, 
+        batch_id : new_id, 
       });
 
       return res
       .status(200)
       .send({ error: null, message: "success", data: { batch } });
+
     } catch (err) {
       console.log(err);
       return res
@@ -37,7 +52,7 @@ module.exports = {
       .status(200)
       .send({ error: null, message: "success", data: { batch } });
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       return res
         .status(500)
         .send({ error: err, message: "failure", data: null });
@@ -50,13 +65,12 @@ module.exports = {
     try {
       const transaction = await Batch.findOne({
         where: { batch_id: id },
-        include: Transaction,
       });
       return res
         .status(200)
         .send({ error: null, message: "success", data: { transaction } });
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       return res
         .status(500)
         .send({ error: err, message: "failure", data: null });

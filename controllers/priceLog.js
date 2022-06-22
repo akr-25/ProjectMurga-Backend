@@ -4,22 +4,27 @@ const {
 } = require("../models");
 
 const Sequelize = require('sequelize');
+const { getBatchCode } = require("../utils/getBatchCode");
 const Op = Sequelize.Op;
 
 module.exports = {
   addPriceLog: async (req, res) => {
-    //TODO -- we should not be able to insert into inactive batches, i'll write code after controllers are merged
-
-    //? C-001 --> C-002 ?
-
     try {
       const batch = await Batch.findOne({
-        where: { batch_id: req.body.unit_id },
+        where: { 
+          batch_id: req.body.unit_id,
+          is_active: "Y" 
+        },
       });
+
+      if(batch == null){
+        throw `batch ${req.body.unit_id} not found`; 
+      }
+
       const priceLog = await batch.createPriceLog(req.body);
-      return res.send({ error: null, message: "success", data: { priceLog } });
+      return res.status(200).send({ error: null, message: "success", data: { priceLog } });
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       return res
         .status(500)
         .send({ error: err, message: "failure", data: null });
@@ -27,29 +32,32 @@ module.exports = {
   },
 
   fetchPriceLogs: async (req, res) => {
-    //TODO remove comment after testing integration with frontend
-
-    // send the start date from frontend with proper type
-    // expects --> http://localhost:3001/fetch/priceLog/date?start="04-05-2022"&end="06-05-2022"
-
     var { from, to } = req.query;
+
+    var { type, sub_type } = req.body; 
+
+    
+    const search_id = String(getBatchCode(type, sub_type) + "%"); 
     
     //* from & to have been checked in middleware, they DO NOT CONTAIN NULL values   
 
     try {
       const pricelogs = await PriceLog.findAll({
-        where: {
-          date: {
+        where: { 
+          createdAt: {
             [Op.and]: [
               { [Op.gte]: Date.parse(from) },
               { [Op.lte]: Date.parse(to) },
             ],
-
             // all pricelogs such that [end >= pricelogs.date >= start]
-            
           },
+          unit_id: {[Op.like] : search_id}, 
         },
       });
+
+      if(pricelogs.length == 0){
+        throw `no pricelogs for ${type}-${sub_type} exists`
+      }   
 
       return res
         .status(200)

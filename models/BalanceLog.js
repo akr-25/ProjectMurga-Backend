@@ -14,10 +14,6 @@ module.exports = (sequelize, DataTypes) => {
   }
   BalanceLog.init(
     {
-      date: {
-        type: DataTypes.DATE,
-        allowNull: false
-      }, 
       unit_id: {
         type: DataTypes.STRING,
         allowNull: false,
