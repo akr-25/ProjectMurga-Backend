@@ -6,13 +6,13 @@ const {
 } = require("../controllers/feedConsumption");
 const SchemaValidator = require("../middleware/schemaValidator.js");
 const checkDate = require("../middleware/checkDate");
+const checkType = require("../middleware/checkType");
 
 router.post(
   "/create",
-  SchemaValidator("feedconsumption_schema"),
   addFeedConsumption
 );
 
-router.get("/?", checkDate,  fetchFeedConsumptionLogs);
+router.get("/fetch/?", checkType, checkDate,  fetchFeedConsumptionLogs);
 
 module.exports = router;

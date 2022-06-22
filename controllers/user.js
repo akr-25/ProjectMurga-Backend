@@ -1,5 +1,5 @@
 const { User } = require("../models");
-const { incrementUserID } = require("../utils/incrementUserID");
+const { incrementID } = require("../utils/incrementID");
 
 module.exports = {
   addUser: async (req, res) => {
@@ -7,7 +7,7 @@ module.exports = {
     try {
       const count = await User.count(); 
 
-      const new_id = incrementUserID(count); 
+      const new_id = incrementID(count); 
 
       const user = await User.create({user_id: new_id, ...req.body}); //! what if user already exists? 
       //! generate user_id in a series

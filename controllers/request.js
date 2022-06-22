@@ -4,14 +4,15 @@ const {
 } = require("../models");
 
 const Sequelize = require('sequelize');
-const { incrementUserID } = require("../utils/incrementUserID");
+const { incrementID } = require("../utils/incrementID");
 const Op = Sequelize.Op;
 
 module.exports = {
   addRequest: async (req, res) => {
     const count = await Request.count(); 
 
-    const new_id = incrementUserID(count);  //! function ka naam change kr dena
+    const new_id = incrementID(count); 
+    
     try {
       const user = await User.findOne({
         where: { user_id: req.body.applicant_id },
@@ -46,10 +47,6 @@ module.exports = {
   },
 
   fetchAllRequest: async (req, res) => {
-    //TODO remove comment after testing integration with frontend
-
-    // send the start date from frontend with proper type
-
     const { from, to } = req.query;
 
     try {
@@ -60,12 +57,10 @@ module.exports = {
               { [Op.gte]: Date.parse(from) },
               { [Op.lte]: Date.parse(to) },
             ],
-            // all pricelogs such that requests.date >= start
           },
         },
         include: User, 
       });
-      // console.log(requests); 
 
       return res
         .status(200)
@@ -79,7 +74,7 @@ module.exports = {
   },
 
   fetchRequestTransactions: async (req, res) => {
-    const { id } = req.params; //!FIX: Error handling if id not present
+    const { id } = req.params; 
 
     try {
       const transaction = await Request.findOne({

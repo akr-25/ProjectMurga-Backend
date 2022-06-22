@@ -3,14 +3,11 @@ const router = express.Router();
 const { addPriceLog, fetchPriceLogs } = require("../controllers/priceLog");
 const SchemaValidator = require("../middleware/schemaValidator.js");
 const checkDate = require("../middleware/checkDate");
+const checkType = require("../middleware/checkType");
 
 
-router.post(
-  "/create",
-  SchemaValidator("pricelog_schema"),
-  addPriceLog
-);
+router.post("/create", addPriceLog);
 
-router.get("/?", checkDate, fetchPriceLogs);
+router.get("/fetch/?", checkType, checkDate, fetchPriceLogs);
 
 module.exports = router;

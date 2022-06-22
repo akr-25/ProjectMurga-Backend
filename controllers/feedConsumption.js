@@ -3,21 +3,33 @@ const {
   Batch,
 } = require("../models");
 
+const Sequelize = require('sequelize');
+const { getBatchCode } = require("../utils/getBatchCode");
+const Op = Sequelize.Op;
+
 module.exports = {
   addFeedConsumption: async (req, res) => {
-    //TODO -- we should not be able to insert into inactive batches, i'll write code after controllers are merged
     try {
       const batch = await Batch.findOne({
-        where: { batch_id: req.body.unit_id },
+        where: { 
+          batch_id: req.body.unit_id,
+          is_active: "Y" 
+        },
       });
+
+      if(batch == null){
+        throw `batch ${req.body.unit_id} not found`;
+      }
+
       const feedConsumption = await batch.createFeedConsumptionLog(req.body);
-      return res.send({
+      return res
+      .status(200)
+      .send({
         error: null,
         message: "success",
         data: { feedConsumption },
       });
     } catch (err) {
-      console.log(err);
       return res
         .status(500)
         .send({ error: err, message: "failure", data: null });
@@ -25,25 +37,30 @@ module.exports = {
   },
 
   fetchFeedConsumptionLogs: async (req, res) => {
-    //TODO remove comment after testing integration with frontend
-
-    // send the start date from frontend with proper type
-    // expects --> http://localhost:3001/fetch/feedConsumptionLog/date?start="04-05-2022"&end="06-05-2022"
-
     const { from, to } = req.query;
+
+    var { type, sub_type } = req.body; 
+
+    
+    const search_id = String(getBatchCode(type, sub_type) + "%");
 
     try {
       const feedlogs = await FeedConsumptionLog.findAll({
         where: {
-          date: {
+          createdAt: {
             [Op.and]: [
               { [Op.gte]: Date.parse(from) },
               { [Op.lte]: Date.parse(to) },
             ],
             // all pricelogs such that pricelogs.date >= start
           },
+          unit_id: {[Op.like] : search_id},
         },
       });
+
+      if(pricelogs.length == 0){
+        throw `no pricelogs for ${type}-${sub_type} exists`
+      }
 
       return res
         .status(200)
