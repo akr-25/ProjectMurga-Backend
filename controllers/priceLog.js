@@ -24,7 +24,6 @@ module.exports = {
       const priceLog = await batch.createPriceLog(req.body);
       return res.status(200).send({ error: null, message: "success", data: { priceLog } });
     } catch (err) {
-      // console.log(err);
       return res
         .status(500)
         .send({ error: err, message: "failure", data: null });
@@ -32,31 +31,32 @@ module.exports = {
   },
 
   fetchPriceLogs: async (req, res) => {
-    var { from, to } = req.query;
-
-    var { type, sub_type } = req.body; 
-
-    
-    const search_id = String(getBatchCode(type, sub_type) + "%"); 
+    let { from, to } = req.query;
     
     //* from & to have been checked in middleware, they DO NOT CONTAIN NULL values   
 
     try {
-      const pricelogs = await PriceLog.findAll({
+      const pricelogs = await Batch.findAll({
         where: { 
-          createdAt: {
-            [Op.and]: [
-              { [Op.gte]: Date.parse(from) },
-              { [Op.lte]: Date.parse(to) },
-            ],
-            // all pricelogs such that [end >= pricelogs.date >= start]
-          },
-          unit_id: {[Op.like] : search_id}, 
+          is_active: "Y"
         },
+        include: {
+          model: PriceLog, 
+          required: true, 
+          where: {
+            createdAt: {
+              [Op.and]: [
+                { [Op.gte]: Date.parse(from) },
+                { [Op.lte]: Date.parse(to) },
+              ],
+              // all pricelogs such that pricelogs.date >= start
+            },
+          }
+        }
       });
 
       if(pricelogs.length == 0){
-        throw `no pricelogs for ${type}-${sub_type} exists`
+        throw "no active pricelogs exist"
       }   
 
       return res

@@ -24,11 +24,7 @@ module.exports = {
       const feedConsumption = await batch.createFeedConsumptionLog(req.body);
       return res
       .status(200)
-      .send({
-        error: null,
-        message: "success",
-        data: { feedConsumption },
-      });
+      .send({error: null, message: "success", data: { feedConsumption } });
     } catch (err) {
       return res
         .status(500)
@@ -37,29 +33,30 @@ module.exports = {
   },
 
   fetchFeedConsumptionLogs: async (req, res) => {
-    const { from, to } = req.query;
-
-    var { type, sub_type } = req.body; 
-
-    
-    const search_id = String(getBatchCode(type, sub_type) + "%");
+    let { from, to } = req.query;
 
     try {
-      const feedlogs = await FeedConsumptionLog.findAll({
-        where: {
-          createdAt: {
-            [Op.and]: [
-              { [Op.gte]: Date.parse(from) },
-              { [Op.lte]: Date.parse(to) },
-            ],
-            // all pricelogs such that pricelogs.date >= start
-          },
-          unit_id: {[Op.like] : search_id},
+      const feedlogs = await Batch.findAll({
+        where: { 
+          is_active: "Y"
         },
+        include: {
+          model: FeedConsumptionLog, 
+          required: true, 
+          where: {
+            createdAt: {
+              [Op.and]: [
+                { [Op.gte]: Date.parse(from) },
+                { [Op.lte]: Date.parse(to) },
+              ],
+              // all feedlogs such that feedlogs.date >= start
+            },
+          }
+        }
       });
 
-      if(pricelogs.length == 0){
-        throw `no pricelogs for ${type}-${sub_type} exists`
+      if(feedlogs.length == 0){
+        throw `no active feedlogs exist`
       }
 
       return res
