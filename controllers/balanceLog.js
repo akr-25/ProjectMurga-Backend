@@ -18,12 +18,12 @@ module.exports = {
       });
 
       if(batch == null){
-        throw `batch ${req.body.unit_id} not found`; 
+        throw `batch ${req.body.unit_id} not found`; //TODO: create a customException https://stackoverflow.com/questions/69165892/how-to-throw-an-exception-with-a-status-code ; same todo for all the throw ctrl+c ctrl+v
       }
 
       const balanceLog = await batch.createBalanceLog(req.body);
       return res
-      .status(200)
+      .status(200) //TODO: 201
       .send({error: null,message: "success", data: { balanceLog },});
     } catch (err) {
       // console.log(err);
