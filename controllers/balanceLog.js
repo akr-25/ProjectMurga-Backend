@@ -1,5 +1,6 @@
 const {
-  Batch
+  Batch,
+  BalanceLog
 } = require("../models");
 
 const Sequelize = require('sequelize');
@@ -35,23 +36,29 @@ module.exports = {
   fetchBalanceLogs: async (req, res) => {
     const { from, to } = req.query;
     
-    var { type, sub_type } = req.body; 
-
-    const search_id = String(getBatchCode(type, sub_type) + "%");
-    
     try {
-      const balancelogs = await BalanceLog.findAll({
-        where: {
-          createdAt: {
-            [Op.and]: [
-              { [Op.gte]: Date.parse(from) },
-              { [Op.lte]: Date.parse(to) },
-            ],
-            // all pricelogs such that pricelogs.date >= start
-            unit_id: {[Op.like] : search_id}, 
-          },
+      const balancelogs = await Batch.findAll({
+        where: { 
+          is_active: "Y"
         },
+        include: {
+          model: BalanceLog, 
+          required: true, 
+          where: {
+            createdAt: {
+              [Op.and]: [
+                { [Op.gte]: Date.parse(from) },
+                { [Op.lte]: Date.parse(to) },
+              ],
+              // all pricelogs such that balancelogs.date >= start
+            },
+          }
+        }
       });
+
+      if(balancelogs.length == 0){
+        throw "no active balancelogs exist"
+      }   
 
       return res
         .status(200)

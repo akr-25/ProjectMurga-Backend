@@ -6,13 +6,12 @@ const {
 } = require("../controllers/balanceLog");
 const SchemaValidator = require("../middleware/schemaValidator.js");
 const checkDate = require("../middleware/checkDate");
-const checkType = require("../middleware/checkType");
 
 router.post(
   "/create",
   addBalanceLog
 );
 
-router.get("/fetch/?", checkType, checkDate, fetchBalanceLogs);
+router.get("/fetch/?", checkDate, fetchBalanceLogs);
 
 module.exports = router;
