@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      price_per_unit: DataTypes.INTEGER,
+      price_per_unit: DataTypes.INTEGER, //TODO: make this non-nullable
     },
     {
       sequelize,

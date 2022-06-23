@@ -16,10 +16,10 @@ module.exports = (sequelize, DataTypes) => {
   Transaction.init(
     {
       transaction_id: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING, //TODO: change datatype to UUID or some other random string, ask your uncle if it's okay
         primaryKey: true,
       },
-      order_id: {
+      order_id: { //TODO: change datatype to UUID or some other random string, ask your uncle if it's okay
         type: DataTypes.STRING,
         allowNull: false,
       },

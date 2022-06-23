@@ -20,7 +20,7 @@ try {
     console.log("Could not establish a connection with redis - " + err);
   });
 
-  redisSession = session({
+  redisSession = session({ //TODO-PROD: change the secret and other configs
     secret: "secret",
     store: new RedisStore({ client: redisClient }),
     resave: false,

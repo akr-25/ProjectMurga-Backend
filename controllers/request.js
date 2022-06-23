@@ -17,7 +17,7 @@ module.exports = {
       const user = await User.findOne({
         where: { user_id: req.body.applicant_id },
       });
-      const request = await user.createRequest({request_id: new_id, ...req.body});
+      const request = await user.createRequest({request_id: new_id, ...req.body}); //TODO: destructure req.body and then pass it , improves code readability
 
       return res
       .status(200)
@@ -35,7 +35,7 @@ module.exports = {
       console.log(req.body); 
       
       const request = await Request.update({order_status: req.body.order_status}, {
-        where: {request_id: req.body.request_id}
+        where: {request_id: req.body.request_id} //TODO: destructure req.body and then pass it , improves code readability
       }); 
       return res.send({ error: null, message: "success", data: { request } });
     } catch (err) {

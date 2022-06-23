@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       user_id: {
         primaryKey: true,
-        type: DataTypes.STRING,
+        type: DataTypes.STRING, //TODO: UUID
       },
       first_name: {
         type: DataTypes.STRING,

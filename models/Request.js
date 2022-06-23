@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      order_status: DataTypes.STRING(50),
+      order_status: DataTypes.STRING(50), //TODO: make all these non-nullable
       type_of_unit: DataTypes.STRING(20),
       req_no_of_units: DataTypes.INTEGER,
       selling_price_per_unit: DataTypes.INTEGER, 

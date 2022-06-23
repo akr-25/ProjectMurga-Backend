@@ -18,9 +18,9 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      net_balance_type1: DataTypes.INTEGER,
+      net_balance_type1: DataTypes.INTEGER, //TODO: make all this non-nullable
       net_balance_type2: DataTypes.INTEGER,
-      type_of_change: DataTypes.STRING(50),
+      type_of_change: DataTypes.STRING(50), //TODO: give a default value
     },
     {
       sequelize,
