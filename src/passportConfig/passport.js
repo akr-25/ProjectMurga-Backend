@@ -1,6 +1,6 @@
 const passport = require("passport");
-const googleStrategy = require("./googleStrategyClass.js");
-const localStrategy = require("./localStrategyClass.js");
+const googleStrategy = require("./googleStrategyClass");
+const localStrategy = require("./localStrategyClass");
 const { sequelize, User } = require("../models");
 
 passport.serializeUser((user, done) => {

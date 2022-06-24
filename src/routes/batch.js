@@ -6,7 +6,7 @@ const {
   fetchBatch,
   updateBatch,
 } = require("../controllers/batch");
-const SchemaValidator = require("../middleware/schemaValidator.js");
+const SchemaValidator = require("../middleware/schemaValidator");
 const checkID = require("../middleware/checkID");
 const checkType = require("../middleware/checkType");
 

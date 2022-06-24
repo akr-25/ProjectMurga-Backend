@@ -1,10 +1,10 @@
-const user_schema = require("./userSchema.js");
-const balancelog_schema = require("./balancelogSchema.js");
-const batch_schema = require("./batchSchema.js");
-const feedconsumption_schema = require("./feedConsumptionSchema.js");
-const pricelog_schema = require("./pricelogSchema.js");
-const request_schema = require("./requestSchema.js");
-const transaction_schema = require("./transanctionSchema.js");
+const user_schema = require("./userSchema");
+const balancelog_schema = require("./balancelogSchema");
+const batch_schema = require("./batchSchema");
+const feedconsumption_schema = require("./feedConsumptionSchema");
+const pricelog_schema = require("./pricelogSchema");
+const request_schema = require("./requestSchema");
+const transaction_schema = require("./transanctionSchema");
 
 module.exports = {
   user_schema,

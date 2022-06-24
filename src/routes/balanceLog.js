@@ -4,7 +4,7 @@ const {
   addBalanceLog,
   fetchBalanceLogs,
 } = require("../controllers/balanceLog");
-const SchemaValidator = require("../middleware/schemaValidator.js");
+const SchemaValidator = require("../middleware/schemaValidator");
 const checkDate = require("../middleware/checkDate");
 
 router.post(

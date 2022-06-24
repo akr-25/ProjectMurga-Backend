@@ -7,7 +7,7 @@ const {
   updateRequest,
   fetchAllRequest,
 } = require("../controllers/request");
-const SchemaValidator = require("../middleware/schemaValidator.js");
+const SchemaValidator = require("../middleware/schemaValidator");
 const checkAuth = require("../middleware/checkAuth");
 const checkID = require("../middleware/checkID");
 const checkDate = require("../middleware/checkDate");

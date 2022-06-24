@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { addTransaction } = require("../controllers/transaction");
-const SchemaValidator = require("../middleware/schemaValidator.js");
+const SchemaValidator = require("../middleware/schemaValidator");
 
 router.post(
   "/create",
