@@ -7,7 +7,7 @@ const { sequelize } = require("./models");
 const passport = require("passport");
 
 // importing this for its side effects only, which is to configure passport
-require("./passportConfig/passport");
+require("./passportConfig/");
 
 const { redisSession } = require("./database/redisConfig");
 
@@ -24,7 +24,7 @@ app.use(passport.session());
 app.use(morgan("dev"));
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "https://murga-28873.web.app",
     credentials: true,
   })
 );
