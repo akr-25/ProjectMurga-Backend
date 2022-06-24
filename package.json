@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node app",
+    "start": "node app.js",
     "dev": "nodemon app",
     "dev:table": "node ./scripts/tables.js",
     "pretty": "npx prettier --write \"./**/*.js\""
@@ -42,7 +42,6 @@
     "morgan": "^1.10.0"
   },
   "devDependencies": {
-    "morgan": "^1.10.0",
     "sequelize-cli": "^6.4.1"
   }
 }
