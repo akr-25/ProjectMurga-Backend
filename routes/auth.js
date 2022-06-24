@@ -21,6 +21,6 @@ router.post("/login", login);
 
 router.get("/status", status);
 
-router.get("/logout", logout);
+router.post("/logout", logout);
 
 module.exports = router;

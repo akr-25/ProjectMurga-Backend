@@ -1,15 +1,4 @@
 const passport = require("passport");
-const express = require("express");
-const {
-  Request,
-  User,
-  FeedConsumptionLog,
-  PriceLog,
-  Batch,
-} = require("../models");
-const { where } = require("sequelize");
-const { userSchema } = require("../Validators/userSchema.js");
-const Joi = require("joi");
 
 module.exports = {
   status: (req, res) => {
@@ -23,10 +12,16 @@ module.exports = {
 
   logout: (req, res) => {
     //!FIX: Should be a post request, not working with post
-    req.logOut();
-    req.session.destroy();
-    // res.redirect("http:localhost:3000/");
-    res.end();
+    try{
+      req.logOut();
+      req.session.destroy();
+
+      res.send({ error: null, message: "success", data: null }); //! temporarily
+    }
+    catch(err){
+      console.log(err); 
+      res.status(500)
+    }
   },
 
   login: (req, res, next) => {

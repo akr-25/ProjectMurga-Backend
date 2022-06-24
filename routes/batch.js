@@ -1,29 +1,23 @@
 const express = require("express");
 const router = express.Router();
-
-const db = require("../database/mysql");
-
-const {
-  Request,
-  User,
-  FeedConsumptionLog,
-  PriceLog,
-  Batch,
-} = require("../models");
-const { where } = require("sequelize");
 const {
   addBatch,
   fetchBatchTransactions,
   fetchBatch,
+  updateBatch,
 } = require("../controllers/batch");
 const SchemaValidator = require("../middleware/schemaValidator.js");
-// const {userSchema} = require('../Validators/postSchema.js')
-// const validateRequest = SchemaValidator(true);
+const checkID = require("../middleware/checkID");
+const checkType = require("../middleware/checkType");
 
-router.post("/batch/create", SchemaValidator("batch_schema"), addBatch);
 
-router.get("/batch/:id/transaction", fetchBatchTransactions);
+router.post("/create", checkType, addBatch); //! schemaValidator has to be different i guess,
+//! we are auto generating the batch ids from the req
 
-router.get("/batch?", fetchBatch);
+router.post("/update", updateBatch);
+
+router.get("/:id/transaction", checkID, fetchBatchTransactions);
+
+router.get("/fetch/?", fetchBatch);
 
 module.exports = router;

@@ -30,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
         // expects Y/N
         type: DataTypes.STRING(1),
         allowNull: false,
+        defaultValue: "Y" 
       },
     },
     {

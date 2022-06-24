@@ -1,28 +1,17 @@
 const express = require("express");
 const router = express.Router();
-
-const db = require("../database/mysql");
-
-const {
-  Request,
-  User,
-  FeedConsumptionLog,
-  PriceLog,
-  Batch,
-} = require("../models");
-const { where } = require("sequelize");
 const {
   addFeedConsumption,
   fetchFeedConsumptionLogs,
 } = require("../controllers/feedConsumption");
 const SchemaValidator = require("../middleware/schemaValidator.js");
+const checkDate = require("../middleware/checkDate");
 
 router.post(
-  "/feedConsumption/create",
-  SchemaValidator("feedconsumption_schema"),
+  "/create",
   addFeedConsumption
 );
 
-router.get("/feedConsumptionLog?", fetchFeedConsumptionLogs);
+router.get("/fetch/?", checkDate,  fetchFeedConsumptionLogs);
 
 module.exports = router;

@@ -1,28 +1,29 @@
-const express = require("express");
 const {
-  Request,
-  User,
-  FeedConsumptionLog,
   PriceLog,
   Batch,
 } = require("../models");
-const { where } = require("sequelize");
-const { userSchema } = require("../Validators/userSchema.js");
-const Joi = require("joi");
+
+const Sequelize = require('sequelize');
+const { getBatchCode } = require("../utils/getBatchCode");
+const Op = Sequelize.Op;
+
 module.exports = {
   addPriceLog: async (req, res) => {
-    //TODO -- we should not be able to insert into inactive batches, i'll write code after controllers are merged
-
-    //? C-001 --> C-002 ?
-
     try {
       const batch = await Batch.findOne({
-        where: { batch_id: req.body.unit_id },
+        where: { 
+          batch_id: req.body.unit_id,
+          is_active: "Y" 
+        },
       });
+
+      if(batch == null){
+        throw `batch ${req.body.unit_id} not found`; 
+      }
+
       const priceLog = await batch.createPriceLog(req.body);
-      return res.send({ error: null, message: "success", data: { priceLog } });
+      return res.status(200).send({ error: null, message: "success", data: { priceLog } });
     } catch (err) {
-      console.log(err);
       return res
         .status(500)
         .send({ error: err, message: "failure", data: null });
@@ -30,37 +31,38 @@ module.exports = {
   },
 
   fetchPriceLogs: async (req, res) => {
-    //TODO remove comment after testing integration with frontend
-
-    // send the start date from frontend with proper type
-    // expects --> http://localhost:3001/fetch/priceLog/date?start="04-05-2022"&end="06-05-2022"
-
-    const { from, to } = req.query;
-
-    if (to == null) {
-      to = new Date();
-      from = to.setMonth(to.getMonth() - 3);
-    }
+    let { from, to } = req.query;
+    
+    //* from & to have been checked in middleware, they DO NOT CONTAIN NULL values   
 
     try {
-      const pricelogs = await PriceLog.findAll({
-        where: {
-          date: {
-            [Op.and]: [
-              { [Op.gte]: Date.parse(from) },
-              { [Op.lte]: Date.parse(to) },
-            ],
-
-            // all pricelogs such that [end >= pricelogs.date >= start]
-          },
+      const pricelogs = await Batch.findAll({
+        where: { 
+          is_active: "Y"
         },
+        include: {
+          model: PriceLog, 
+          required: true, 
+          where: {
+            createdAt: {
+              [Op.and]: [
+                { [Op.gte]: Date.parse(from) },
+                { [Op.lte]: Date.parse(to) },
+              ],
+              // all pricelogs such that pricelogs.date >= start
+            },
+          }
+        }
       });
+
+      if(pricelogs.length == 0){
+        throw "no active pricelogs exist"
+      }   
 
       return res
         .status(200)
         .send({ error: null, message: "success", data: { pricelogs } });
     } catch (err) {
-      console.log(err);
       return res
         .status(500)
         .send({ error: err, message: "failure", data: null });

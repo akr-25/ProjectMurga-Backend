@@ -16,18 +16,26 @@ module.exports = (sequelize, DataTypes) => {
     {
       user_id: {
         primaryKey: true,
-        type: DataTypes.STRING,
+        type: DataTypes.STRING, //TODO: UUID
       },
-      first_name: DataTypes.STRING,
+      first_name: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
       last_name: DataTypes.STRING,
-      contact_no: DataTypes.STRING(10),
+      contact_no: {
+        type: DataTypes.STRING(10),
+        allowNull: false
+      }, 
       email: {
         type: DataTypes.STRING,
         unique: true,
+        allowNull: false
       },
       password: {
         type: DataTypes.STRING,
-      },
+        allowNull: false
+      }
     },
     {
       sequelize,

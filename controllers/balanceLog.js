@@ -1,30 +1,32 @@
-const express = require("express");
 const {
-  Request,
-  User,
-  FeedConsumptionLog,
-  PriceLog,
   Batch,
+  BalanceLog
 } = require("../models");
-const { where } = require("sequelize");
-const { userSchema } = require("../Validators/userSchema.js");
-const Joi = require("joi");
+
+const Sequelize = require('sequelize');
+const { getBatchCode } = require("../utils/getBatchCode");
+const Op = Sequelize.Op;
+
 module.exports = {
   addBalanceLog: async (req, res) => {
-    //TODO -- we should not be able to insert into inactive batches, i'll write code after controllers are merged
-
     try {
       const batch = await Batch.findOne({
-        where: { batch_id: req.body.unit_id },
+        where: { 
+          batch_id: req.body.unit_id,
+          is_active: "Y" 
+        },
       });
+
+      if(batch == null){
+        throw `batch ${req.body.unit_id} not found`; //TODO: create a customException https://stackoverflow.com/questions/69165892/how-to-throw-an-exception-with-a-status-code ; same todo for all the throw ctrl+c ctrl+v
+      }
+
       const balanceLog = await batch.createBalanceLog(req.body);
-      return res.send({
-        error: null,
-        message: "success",
-        data: { balanceLog },
-      });
+      return res
+      .status(200) //TODO: 201
+      .send({error: null,message: "success", data: { balanceLog },});
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       return res
         .status(500)
         .send({ error: err, message: "failure", data: null });
@@ -32,25 +34,31 @@ module.exports = {
   },
 
   fetchBalanceLogs: async (req, res) => {
-    //TODO remove comment after testing integration with frontend
-
-    // send the start date from frontend with proper type
-    // expects --> http://localhost:3001/fetch/balanceLog/date?start="04-05-2022"&end="06-05-2022"
-
     const { from, to } = req.query;
-
+    
     try {
-      const balancelogs = await BalanceLog.findAll({
-        where: {
-          date: {
-            [Op.and]: [
-              { [Op.gte]: Date.parse(from) },
-              { [Op.lte]: Date.parse(to) },
-            ],
-            // all pricelogs such that pricelogs.date >= start
-          },
+      const balancelogs = await Batch.findAll({
+        where: { 
+          is_active: "Y"
         },
+        include: {
+          model: BalanceLog, 
+          required: true, 
+          where: {
+            createdAt: {
+              [Op.and]: [
+                { [Op.gte]: Date.parse(from) },
+                { [Op.lte]: Date.parse(to) },
+              ],
+              // all pricelogs such that balancelogs.date >= start
+            },
+          }
+        }
       });
+
+      if(balancelogs.length == 0){
+        throw "no active balancelogs exist"
+      }   
 
       return res
         .status(200)
