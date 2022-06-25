@@ -1,20 +1,26 @@
 "use strict";
+//* Batch Model details
+/*
+  batch_id : primary key
+  is_active : 
+      -   is the current batch available for transactions? 
+      -   a variable maintained by admin 
+      -   **auto discontinue a batch when its balance [found in balance log model] becomes zero
+          with permission from admin
+      -   **auto discontinue a batch when it has to be converted into another
+          with permission from admin
+*/
+
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Batch extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate({
-      Transaction,
+      Request,
       FeedConsumptionLog,
       PriceLog,
       BalanceLog,
     }) {
-      // define association here
-      this.hasMany(Transaction, { foreignKey: "unit_id" });
+      this.hasMany(Request, { foreignKey: "unit_id" });
       this.hasMany(FeedConsumptionLog, { foreignKey: "unit_id" });
       this.hasMany(PriceLog, { foreignKey: "unit_id" });
       this.hasMany(BalanceLog, { foreignKey: "unit_id" });
@@ -27,7 +33,6 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
       },
       is_active: {
-        // expects Y/N
         type: DataTypes.STRING(1),
         allowNull: false,
         defaultValue: "Y" 

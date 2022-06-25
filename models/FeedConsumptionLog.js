@@ -1,14 +1,15 @@
 "use strict";
+//*FeedConsumptionLog model details
+/*
+  unit_id : primary_key
+  rate : total food given daily to a unit
+  price_per_gram: food_price per gram
+*/
+
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class FeedConsumptionLog extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate({ Batch }) {
-      // define association here
       this.belongsTo(Batch, { foreignKey: "unit_id" });
     }
   }
@@ -18,8 +19,14 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },  
-      rate: DataTypes.INTEGER,
-      cost_per_gram: DataTypes.INTEGER,
+      rate: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+      },
+      cost_per_gram: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+      }
     },
     {
       sequelize,
