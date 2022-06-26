@@ -10,6 +10,7 @@ const Op = Sequelize.Op;
 module.exports = {
   addFeedConsumption: async (req, res) => {
     try {
+      const {unit_id , rate, cost_per_gram} = req.body; 
       const batch = await Batch.findOne({
         where: { 
           batch_id: req.body.unit_id,
@@ -21,9 +22,13 @@ module.exports = {
         throw `batch ${req.body.unit_id} not found`;
       }
 
-      const feedConsumption = await batch.createFeedConsumptionLog(req.body);
+      const feedConsumption = await batch.createFeedConsumptionLog({
+        unit_id: unit_id, 
+        rate: rate,
+        cost_per_gram: cost_per_gram, 
+      });
       return res
-      .status(200)
+      .status(201)
       .send({error: null, message: "success", data: { feedConsumption } });
     } catch (err) {
       return res

@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node app",
+    "start": "node app.js",
     "dev": "nodemon app",
     "dev:table": "node ./scripts/tables.js",
     "pretty": "npx prettier --write \"./**/*.js\""
@@ -38,10 +38,10 @@
     "passport-google-oauth20": "^2.0.0",
     "passport-local": "^1.0.0",
     "redis": "^3.0.0",
-    "sequelize": "^6.13.0"
+    "sequelize": "^6.13.0",
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
-    "morgan": "^1.10.0",
     "sequelize-cli": "^6.4.1"
   }
 }

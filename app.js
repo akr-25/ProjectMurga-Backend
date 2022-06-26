@@ -37,7 +37,6 @@ app.use("/auth", require("./routes/auth"));
 app.use("/api/balanceLog", require("./routes/balanceLog"));
 app.use("/api/feedConsumptionLog", require("./routes/feedConsumptionLog"));
 app.use("/api/priceLog", require("./routes/priceLog"));
-app.use("/api/transaction", require("./routes/transaction"));
 app.use("/api/batch", require("./routes/batch"));
 app.use("/api/user", require("./routes/user"));
 app.use("/api/request", require("./routes/request"));

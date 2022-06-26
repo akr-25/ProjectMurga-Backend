@@ -1,9 +1,10 @@
 const {
   Batch, 
-  Transaction
+  Transaction,
+  BalanceLog
 } = require("../models");
 const { getBatchCode } = require("../utils/getBatchCode");
-const { incrementID } = require("../utils/incrementID");
+const { customError } = require("../utils/customError");
 const { Op } = require("sequelize");
 
 module.exports = {
@@ -14,23 +15,39 @@ module.exports = {
       const batch_code = getBatchCode(type, sub_type); 
       const search_code = String(batch_code + "%"); 
 
-      const count = await Batch.count(
+      const last_batch = await Batch.findOne( 
         {
+          raw: true, 
           where: {
             batch_id: {[Op.like] : search_code }
-          }
+          },
+          order: [ [ 'createdAt', 'DESC' ]],
         }
-      ); 
+      );
       
-      const new_id = String(batch_code + "-"+ incrementID(count)); 
-    
+      let lastid = 0
+      if(last_batch != null){
+        lastid = String(last_batch.batch_id).split("-").at(-1); 
+      }
+      
+      if(lastid == null) lastid = 0; 
+
+      const new_id = String(batch_code + "-" + (Number(lastid)+1)); 
+
       const batch = await Batch.create({
         batch_id : new_id, 
       });
 
+      const balancelog = await BalanceLog.create({
+        unit_id : new_id, 
+        net_balance_type1: 0,
+        net_balance_type2: 0, 
+        type_of_change: "Initialization"
+      })
+
       return res
-      .status(200)
-      .send({ error: null, message: "success", data: { batch } });
+      .status(201) 
+      .send({ error: null, message: "success", data: { batch, balancelog } });
 
     } catch (err) {
       console.log(err);
@@ -44,15 +61,22 @@ module.exports = {
     //? needed for deactivating a batch 
 
     try {
-      const batch = await Batch.update({is_active: req.body.is_active}, {
-        where: {batch_id : req.body.batch_id}
-      });
+      const { is_active, batch_id } = req.body; 
 
+      const rows_updated = await Batch.update({is_active: is_active}, {
+        where: {batch_id : batch_id}
+      }); 
+      //TODO: check if the batch even exists or not!
+      //* if there is no batch then rows_updated == 0 !! 
+
+      if(rows_updated == 0){
+        throw new customError(`no batch with batch_id = ${batch_id} found`)
+      }
+      
       return res
       .status(200)
       .send({ error: null, message: "success", data: { batch } });
     } catch (err) {
-      // console.log(err);
       return res
         .status(500)
         .send({ error: err, message: "failure", data: null });

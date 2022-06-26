@@ -4,25 +4,33 @@ const {
 } = require("../models");
 
 const Sequelize = require('sequelize');
-const { getBatchCode } = require("../utils/getBatchCode");
 const Op = Sequelize.Op;
 
 module.exports = {
   addPriceLog: async (req, res) => {
     try {
+      const { unit_id, price_per_unit } = req.body;
+
       const batch = await Batch.findOne({
         where: { 
-          batch_id: req.body.unit_id,
+          batch_id: unit_id,
           is_active: "Y" 
         },
       });
 
       if(batch == null){
-        throw `batch ${req.body.unit_id} not found`; 
+        throw `batch ${unit_id} not found`; 
       }
 
-      const priceLog = await batch.createPriceLog(req.body);
-      return res.status(200).send({ error: null, message: "success", data: { priceLog } });
+      const priceLog = await batch.createPriceLog({
+        unit_id: unit_id, 
+        price_per_unit: price_per_unit
+      });
+
+      return res
+      .status(201)
+      .send({ error: null, message: "success", data: { priceLog } });
+
     } catch (err) {
       return res
         .status(500)

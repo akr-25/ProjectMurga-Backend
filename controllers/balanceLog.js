@@ -10,20 +10,27 @@ const Op = Sequelize.Op;
 module.exports = {
   addBalanceLog: async (req, res) => {
     try {
+      const {unit_id, net_balance_type1, net_balance_type2, type_of_change } = req.body; 
+
       const batch = await Batch.findOne({
         where: { 
-          batch_id: req.body.unit_id,
+          batch_id: unit_id,
           is_active: "Y" 
         },
       });
 
       if(batch == null){
-        throw `batch ${req.body.unit_id} not found`; 
+        throw `batch ${unit_id} not found`; //TODO: create a customException https://stackoverflow.com/questions/69165892/how-to-throw-an-exception-with-a-status-code ; same todo for all the throw ctrl+c ctrl+v
       }
 
-      const balanceLog = await batch.createBalanceLog(req.body);
+      const balanceLog = await batch.createBalanceLog({
+        unit_id: unit_id,
+        net_balance_type1: net_balance_type1,
+        net_balance_type2: net_balance_type2,
+        type_of_change: type_of_change, 
+      });
       return res
-      .status(200)
+      .status(201) 
       .send({error: null,message: "success", data: { balanceLog },});
     } catch (err) {
       // console.log(err);

@@ -20,6 +20,4 @@ router.post("/create", addRequest);
 
 router.post("/update", updateRequest);
 
-router.get("/:id/transaction", checkID, fetchRequestTransactions);
-
 module.exports = router;

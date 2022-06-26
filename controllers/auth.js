@@ -12,6 +12,8 @@ module.exports = {
 
   logout: (req, res) => {
     //!FIX: Should be a post request, not working with post
+    //! shut up aman
+    
     try{
       req.logOut();
       req.session.destroy();
@@ -25,15 +27,9 @@ module.exports = {
   },
 
   login: (req, res, next) => {
-    // console.log('Inside POST /login callback')
+
     passport.authenticate("local", (err, user, info) => {
-      // console.log('Inside passport.authenticate() callback');
-      // console.log(`req.session.passport: ${JSON.stringify(req.session.passport)}`)
-      // console.log(`req.user: ${JSON.stringify(req.user)}`)
       req.login(user, (err) => {
-        // console.log('Inside req.login() callback')
-        // console.log(`req.session.passport: ${JSON.stringify(req.session.passport)}`)
-        // console.log(`req.user: ${JSON.stringify(req.user)}`)
         return res.redirect("/dashboard");
       });
     })(req, res, next);
