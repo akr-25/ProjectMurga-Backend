@@ -6,4 +6,4 @@ function customError(message) {
     return error;
   }
   
-  throwError.prototype = Object.create(Error.prototype);
+customError.prototype = Object.create(Error.prototype);
