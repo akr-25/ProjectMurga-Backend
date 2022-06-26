@@ -5,6 +5,7 @@ const {
 
 const Sequelize = require('sequelize');
 const { getBatchCode } = require("../utils/getBatchCode");
+const batch = require("./batch");
 const Op = Sequelize.Op;
 
 module.exports = {
@@ -41,35 +42,66 @@ module.exports = {
   },
 
   fetchBalanceLogs: async (req, res) => {
-    const { from, to } = req.query;
+    const { from, to, batch_id } = req.query;
     
     try {
-      const balancelogs = await Batch.findAll({
-        where: { 
-          is_active: "Y"
-        },
-        include: {
-          model: BalanceLog, 
-          required: true, 
-          where: {
-            createdAt: {
-              [Op.and]: [
-                { [Op.gte]: Date.parse(from) },
-                { [Op.lte]: Date.parse(to) },
-              ],
-              // all pricelogs such that balancelogs.date >= start
-            },
+      if(batch_id == null){
+        const balancelogs = await Batch.findAll({
+          where: { 
+            is_active: "Y"
+          },
+          include: {
+            model: BalanceLog, 
+            required: true, 
+            where: {
+              createdAt: {
+                [Op.and]: [
+                  { [Op.gte]: Date.parse(from) },
+                  { [Op.lte]: Date.parse(to) },
+                ],
+                // all pricelogs such that balancelogs.date >= start
+              },
+            }
           }
-        }
-      });
-
-      if(balancelogs.length == 0){
-        throw "no active balancelogs exist"
-      }   
-
-      return res
-        .status(200)
-        .send({ error: null, message: "success", data: { balancelogs } });
+        });
+  
+        if(balancelogs.length == 0){
+          throw "no active balancelogs exist"
+        }   
+  
+        return res
+          .status(200)
+          .send({ error: null, message: "success", data: { balancelogs } });
+      }
+      else{
+        const balancelogs = await Batch.findOne({
+          where: { 
+            batch_id: batch_id
+          },
+          include: {
+            model: BalanceLog, 
+            required: true, 
+            where: {
+              createdAt: {
+                [Op.and]: [
+                  { [Op.gte]: Date.parse(from) },
+                  { [Op.lte]: Date.parse(to) },
+                ],
+                // all pricelogs such that balancelogs.date >= start
+              },
+            }
+          }
+        });
+  
+        if(balancelogs.length == 0){
+          throw "no active balancelogs exist"
+        }   
+  
+        return res
+          .status(200)
+          .send({ error: null, message: "success", data: { balancelogs } });
+      }
+      
     } catch (err) {
       console.log(err);
       return res
