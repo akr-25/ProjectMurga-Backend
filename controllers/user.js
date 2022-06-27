@@ -5,14 +5,14 @@ module.exports = {
   addUser: async (req, res) => {
     const {first_name, last_name, contact_no, email, password } = req.body;
     try {
-      const find_user = await User.findOne({
+      const user = await User.findOne({
         where: {
           first_name: first_name, 
           contact_no: contact_no 
         }
       })
-      if(find_user != null){
-        return res.status(200).send({ error: null, message: "success", data: { find_user } });
+      if(user != null){
+        return res.status(200).send({ error: null, message: "success", data: { user } });
       }
       else{
         const user = await User.create({
