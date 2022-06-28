@@ -31,7 +31,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(20),
         allowNull: false
       },
-      req_no_of_units: {
+      req_no_of_units_type1: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+      },
+      req_no_of_units_type2: {
         type: DataTypes.INTEGER,
         allowNull: false
       },
