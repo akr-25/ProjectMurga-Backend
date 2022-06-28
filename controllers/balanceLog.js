@@ -30,11 +30,11 @@ module.exports = {
         net_balance_type2: net_balance_type2,
         type_of_change: type_of_change, 
       });
+      
       return res
       .status(201) 
       .send({error: null,message: "success", data: { balanceLog },});
     } catch (err) {
-      // console.log(err);
       return res
         .status(500)
         .send({ error: err, message: "failure", data: null });
@@ -59,9 +59,10 @@ module.exports = {
                   { [Op.gte]: Date.parse(from) },
                   { [Op.lte]: Date.parse(to) },
                 ],
-                // all pricelogs such that balancelogs.date >= start
               },
-            }
+            },
+            limit: 1, 
+            order: [ [ 'updatedAt', 'DESC' ]],
           }
         });
   
@@ -74,32 +75,25 @@ module.exports = {
           .send({ error: null, message: "success", data: { balancelogs } });
       }
       else{
-        const balancelogs = await Batch.findOne({
-          where: { 
-            batch_id: batch_id
-          },
-          include: {
-            model: BalanceLog, 
-            required: true, 
-            where: {
-              createdAt: {
-                [Op.and]: [
-                  { [Op.gte]: Date.parse(from) },
-                  { [Op.lte]: Date.parse(to) },
-                ],
-                // all pricelogs such that balancelogs.date >= start
-              },
-            }
-          }
-        });
-  
-        if(balancelogs.length == 0){
+        // console.log(batch_id); 
+
+        const balancelogs = await BalanceLog.findOne({
+          raw: true, 
+          where: {
+            unit_id: String(batch_id),  
+          }, 
+          order : [['updatedAt', 'DESC']], 
+        })
+        
+        // console.log(balancelogs); 
+
+        if(balancelogs == null){
           throw "no active balancelogs exist"
         }   
   
         return res
           .status(200)
-          .send({ error: null, message: "success", data: { balancelogs } });
+          .send({ error: null, message: "success", data: { balancelogs }});
       }
       
     } catch (err) {

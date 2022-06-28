@@ -56,10 +56,12 @@ module.exports = {
               [Op.and]: [
                 { [Op.gte]: Date.parse(from) },
                 { [Op.lte]: Date.parse(to) },
-              ],
+              ], //! fetch l;atest prive
               // all pricelogs such that pricelogs.date >= start
             },
-          }
+          },
+          limit: 1, 
+          order: [ [ 'updatedAt', 'DESC' ]],
         }
       });
 
