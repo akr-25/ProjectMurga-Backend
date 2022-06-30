@@ -9,14 +9,15 @@ const Op = Sequelize.Op;
 module.exports = {
   addRequest: async (req, res) => {
     try {
-      const { applicant_id, unit_id, order_status, type_of_unit, req_no_of_units, selling_price_per_unit, order_type } = req.body; 
+      const { applicant_id, unit_id, order_status, type_of_unit, req_no_of_units_type1, req_no_of_units_type2, selling_price_per_unit, order_type } = req.body; 
 
       const request = await Request.create({
         applicant_id: applicant_id,
         unit_id: unit_id, 
         order_status: order_status, 
-        type_of_unit: type_of_unit, 
-        req_no_of_units: req_no_of_units, 
+        type_of_unit: type_of_unit,
+        req_no_of_units_type1:  req_no_of_units_type1,
+        req_no_of_units_type2: req_no_of_units_type2, 
         selling_price_per_unit: selling_price_per_unit, 
         order_type: order_type
       });
