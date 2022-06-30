@@ -1,0 +1,11 @@
+DB_HOST=localhost
+DB_USER=root
+DB_PASS=Epicduel?123
+DB_NAME=murga_db
+DB_PORT=3306
+REDIS_HOST=redis-15912.c244.us-east-1-2.ec2.cloud.redislabs.com
+REDIS_PORT=15912
+REDIS_PASS=5Xh6xmrFvxmJ7sHJsZhg0tJuNaZqwfwv 
+GOOGLE_CLIENT_ID=559042937570-0o76ebh7oc12vijjrjqokgdhn6i9nmn0.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=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
+SECRET=secret-santa
