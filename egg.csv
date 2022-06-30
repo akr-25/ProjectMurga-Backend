@@ -1,0 +1,2 @@
+date,unit_id,previous_balance_table,previous_balance_hatching,Produced_Table,Produced_Hatching,type_of_unit,Total_Table,Total_Hatching,Sale_Table,Sale_Hatching,Buyer_info,Sale_Rate,Amount,order_type
+30/6/2022,DE-1,0,0,10,10000000,egg,10,10000000,5,5,first_name,3,30,BUY

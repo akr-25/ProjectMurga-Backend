@@ -1,10 +1,10 @@
 "use strict";
-//* BalanceLog Model Details --> 
+//* BalanceLog Model Details -->
 /*
   unit_id :  primary_key
 
   net_balance_type1 , net_balance_type2: this has different meanings according to context
-      Case 1[Eggs (of any type)] : type1(PRODUCTION) & type2(HATCHING)
+      Case 1[Eggs (of any type)] : type1(TABLE) & type2(HATCHING)
       Case 2[Chicks/ (Ducklings)] -> type1(ALL) & type2(DEFAULTS TO 0)  [chicks/duckling don't have gender]
       Case 3[Growers] -> type1(MALE) & type2(FEMALE)
       Case 4[Layers] ->  SAME AS GROWERS
@@ -22,7 +22,6 @@
 
 */
 
-
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class BalanceLog extends Model {
@@ -39,15 +38,15 @@ module.exports = (sequelize, DataTypes) => {
       net_balance_type1: {
         type: DataTypes.INTEGER,
         allowNull: false,
-      },  
+      },
       net_balance_type2: {
         type: DataTypes.INTEGER,
         allowNull: false,
-      }, 
+      },
       type_of_change: {
         type: DataTypes.STRING(50),
-        defaultValue: "Birth"
-      } 
+        defaultValue: "Birth",
+      },
     },
     {
       sequelize,
@@ -57,5 +56,3 @@ module.exports = (sequelize, DataTypes) => {
   );
   return BalanceLog;
 };
-
-
