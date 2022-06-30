@@ -50,22 +50,23 @@ module.exports = {
         },
         include: {
           model: PriceLog, 
+          limit: 1, 
+          separate: true, 
           required: true, 
           where: {
             createdAt: {
               [Op.and]: [
                 { [Op.gte]: Date.parse(from) },
                 { [Op.lte]: Date.parse(to) },
-              ], //! fetch l;atest prive
+              ], 
               // all pricelogs such that pricelogs.date >= start
             },
           },
-          limit: 1, 
           order: [ [ 'updatedAt', 'DESC' ]],
         }
       });
 
-      if(pricelogs.length == 0){
+      if(pricelogs == null){
         throw "no active pricelogs exist"
       }   
 

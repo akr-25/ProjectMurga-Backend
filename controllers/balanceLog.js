@@ -82,7 +82,7 @@ module.exports = {
           where: {
             unit_id: String(batch_id),  
           }, 
-          order : [['updatedAt', 'DESC']], 
+          order : [ ['updatedAt', 'DESC'] ], 
         })
         
         // console.log(balancelogs); 
