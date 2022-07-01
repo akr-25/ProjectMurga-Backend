@@ -35,7 +35,11 @@ module.exports = (sequelize, DataTypes) => {
       is_active: {
         type: DataTypes.STRING(1),
         allowNull: false,
-        defaultValue: "Y" 
+        defaultValue: "Y", 
+        validate: {
+          isAlpha: true, 
+          len :[1,1] 
+        } 
       },
     },
     {

@@ -4,6 +4,7 @@ const {
 } = require("../models");
 
 const Sequelize = require('sequelize');
+const Api404Error = require("../errors/api404Error");
 const Op = Sequelize.Op;
 
 module.exports = {
@@ -32,9 +33,7 @@ module.exports = {
       .send({ error: null, message: "success", data: { priceLog } });
 
     } catch (err) {
-      return res
-        .status(500)
-        .send({ error: err, message: "failure", data: null });
+      next(err)
     }
   },
 
@@ -67,16 +66,14 @@ module.exports = {
       });
 
       if(pricelogs == null){
-        throw "no active pricelogs exist"
-      }   
+        throw new Api404Error("no active pricelogs exist")
+      }
 
       return res
         .status(200)
         .send({ error: null, message: "success", data: { pricelogs } });
     } catch (err) {
-      return res
-        .status(500)
-        .send({ error: err, message: "failure", data: null });
+      next(err)
     }
   },
 };

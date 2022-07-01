@@ -33,11 +33,19 @@ module.exports = (sequelize, DataTypes) => {
       },
       req_no_of_units_type1: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        validate: {
+          isNumeric: true, 
+          min: 1 
+        }
       },
       req_no_of_units_type2: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        validate: {
+          isNumeric: true, 
+          min: 1 
+        }
       },
       selling_price_per_unit: {
         type: DataTypes.INTEGER,

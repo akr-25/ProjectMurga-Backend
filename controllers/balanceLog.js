@@ -4,8 +4,7 @@ const {
 } = require("../models");
 
 const Sequelize = require('sequelize');
-const { getBatchCode } = require("../utils/getBatchCode");
-const batch = require("./batch");
+const Api404Error = require("../errors/Api404Error");
 const Op = Sequelize.Op;
 
 module.exports = {
@@ -21,7 +20,7 @@ module.exports = {
       });
 
       if(batch == null){
-        throw `batch ${unit_id} not found`; //TODO: create a customException https://stackoverflow.com/questions/69165892/how-to-throw-an-exception-with-a-status-code ; same todo for all the throw ctrl+c ctrl+v
+        throw new Api404Error(`no batch with batch_id: ${batch_id} found`)
       }
 
       const balanceLog = await batch.createBalanceLog({
@@ -33,11 +32,9 @@ module.exports = {
       
       return res
       .status(201) 
-      .send({error: null,message: "success", data: { balanceLog },});
+      .send({error: null , message: "success", data: { balanceLog },});
     } catch (err) {
-      return res
-        .status(500)
-        .send({ error: err, message: "failure", data: null });
+      next(err)
     }
   },
 
@@ -66,8 +63,8 @@ module.exports = {
           }
         });
   
-        if(balancelogs.length == 0){
-          throw "no active balancelogs exist"
+        if(balancelogs == null){
+          throw new Api404Error("no active balancelogs exist")
         }   
   
         return res
@@ -75,8 +72,6 @@ module.exports = {
           .send({ error: null, message: "success", data: { balancelogs } });
       }
       else{
-        // console.log(batch_id); 
-
         const balancelogs = await BalanceLog.findOne({
           raw: true, 
           where: {
@@ -85,11 +80,10 @@ module.exports = {
           order : [ ['updatedAt', 'DESC'] ], 
         })
         
-        // console.log(balancelogs); 
 
         if(balancelogs == null){
-          throw "no active balancelogs exist"
-        }   
+          throw new Api404Error(`no batch with batch_id: ${batch_id} exist`) 
+        }
   
         return res
           .status(200)
@@ -97,10 +91,7 @@ module.exports = {
       }
       
     } catch (err) {
-      console.log(err);
-      return res
-        .status(500)
-        .send({ error: err, message: "failure", data: null });
+      next(err) 
     }
   },
 };

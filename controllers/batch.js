@@ -1,14 +1,15 @@
 const {
   Batch, 
-  Transaction,
   BalanceLog
 } = require("../models");
 const { getBatchCode } = require("../utils/getBatchCode");
-const { customError } = require("../utils/customError");
+const { sequelize } = require("../models");
 const { Op } = require("sequelize");
+const Api404Error = require("../errors/Api404Error");
 
 module.exports = {
   addBatch: async (req, res) => {
+    const t = await sequelize.transaction();
     try {
       const {type, sub_type} = req.body; 
 
@@ -34,26 +35,29 @@ module.exports = {
 
       const new_id = String(batch_code + "-" + (Number(lastid)+1)); 
 
+       
+      
       const batch = await Batch.create({
         batch_id : new_id, 
-      });
+      }, {transaction: t});
 
       const balancelog = await BalanceLog.create({
         unit_id : new_id, 
         net_balance_type1: 0,
         net_balance_type2: 0, 
         type_of_change: "Initialization"
-      })
+      }, {transaction: t})
+      
+      await t.commit() 
 
       return res
-      .status(201) 
-      .send({ error: null, message: "success", data: { batch, balancelog } });
+        .status(200)
+        .send({ error: null, message: "success", data: { batch, balancelog } });
 
     } catch (err) {
-      console.log(err);
-      return res
-        .status(500)
-        .send({ error: err, message: "failure", data: null });
+      await t.rollback()
+
+      next(err)
     }
   },
 
@@ -66,11 +70,9 @@ module.exports = {
       const rows_updated = await Batch.update({is_active: is_active}, {
         where: {batch_id : batch_id}
       }); 
-      //TODO: check if the batch even exists or not!
-      //* if there is no batch then rows_updated == 0 !! 
 
       if(rows_updated == 0){
-        throw new customError(`no batch with batch_id = ${batch_id} found`)
+        throw new Api404Error(`no batch with batch_id: ${batch_id} found`) 
       }
       
       return res
