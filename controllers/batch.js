@@ -11,10 +11,11 @@ const { getBatchCode } = require("../utils/getBatchCode");
 const { generateCSV } = require("../scripts/makecsv");
 const { customError } = require("../utils/customError");
 const { Op } = require("sequelize");
-const { string } = require("joi");
+const { sequelize } = require("../models");
 
 module.exports = {
-  addBatch: async (req, res) => {
+  addBatch: async (req, res, next) => {
+    const t = await sequelize.transaction();
     try {
       const { type, sub_type } = req.body;
 
@@ -30,8 +31,11 @@ module.exports = {
       });
 
       let lastid = 0;
+      console.log(last_batch);
       if (last_batch != null) {
-        lastid = String(last_batch.batch_id).split("-").at(-1);
+        const v = last_batch.batch_id.toString();
+        console.log(v);
+        lastid = v.split("-")[-1];
       }
 
       if (lastid == null) lastid = 0;
@@ -60,7 +64,7 @@ module.exports = {
     }
   },
 
-  updateBatch: async (req, res) => {
+  updateBatch: async (req, res, next) => {
     //? needed for deactivating a batch
 
     try {
@@ -83,13 +87,11 @@ module.exports = {
         .status(200)
         .send({ error: null, message: "success", data: { batch } });
     } catch (err) {
-      return res
-        .status(500)
-        .send({ error: err, message: "failure", data: null });
+      next(err);
     }
   },
 
-  fetchBatchTransactions: async (req, res) => {
+  fetchBatchTransactions: async (req, res, next) => {
     const { id } = req.params;
 
     try {
@@ -100,15 +102,12 @@ module.exports = {
         .status(200)
         .send({ error: null, message: "success", data: { transaction } });
     } catch (err) {
-      console.log(err);
-      return res
-        .status(500)
-        .send({ error: err, message: "failure", data: null });
+      next(err);
     }
   },
 
-  fetchBatch: async (req, res) => {
-    var { state } = req.query;
+  fetchBatch: async (req, res, next) => {
+    let { state } = req.query;
 
     if (state == null) state = "Y";
 
@@ -121,10 +120,7 @@ module.exports = {
         .status(200)
         .send({ error: null, message: "success", data: { batch } });
     } catch (err) {
-      console.log(err);
-      return res
-        .status(500)
-        .send({ error: err, message: "failure", data: null });
+      next(err);
     }
   },
   getCSV: async (req, res) => {
