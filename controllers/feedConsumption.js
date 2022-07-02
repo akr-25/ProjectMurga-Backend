@@ -4,7 +4,7 @@ const {
 } = require("../models");
 
 const Sequelize = require('sequelize');
-const { getBatchCode } = require("../utils/getBatchCode");
+
 const Api404Error = require("../errors/Api404Error");
 const Api400Error = require("../errors/api400Error");
 const Op = Sequelize.Op;
