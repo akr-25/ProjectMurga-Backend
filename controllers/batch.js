@@ -14,7 +14,7 @@ const { Op } = require("sequelize");
 const { sequelize } = require("../models");
 
 module.exports = {
-  addBatch: async (req, res) => {
+  addBatch: async (req, res, next) => {
     const t = await sequelize.transaction();
     try {
       const { type, sub_type } = req.body;
@@ -64,13 +64,8 @@ module.exports = {
     }
   },
 
-<<<<<<< HEAD
   updateBatch: async (req, res, next) => {
     //? needed for deactivating a batch
-=======
-  updateBatch: async (req, res) => {
-    //? needed for deactivating a batch 
->>>>>>> parent of afe1484 (next() issues resolved)
 
     try {
       const { is_active, batch_id } = req.body;
@@ -92,17 +87,11 @@ module.exports = {
         .status(200)
         .send({ error: null, message: "success", data: { batch } });
     } catch (err) {
-<<<<<<< HEAD
       next(err);
-=======
-      return res
-        .status(500)
-        .send({ error: err, message: "failure", data: null });
->>>>>>> parent of afe1484 (next() issues resolved)
     }
   },
 
-  fetchBatchTransactions: async (req, res) => {
+  fetchBatchTransactions: async (req, res, next) => {
     const { id } = req.params;
 
     try {
@@ -113,19 +102,12 @@ module.exports = {
         .status(200)
         .send({ error: null, message: "success", data: { transaction } });
     } catch (err) {
-<<<<<<< HEAD
       next(err);
-=======
-      // console.log(err);
-      return res
-        .status(500)
-        .send({ error: err, message: "failure", data: null });
->>>>>>> parent of afe1484 (next() issues resolved)
     }
   },
 
-  fetchBatch: async (req, res) => {
-    var { state } = req.query;
+  fetchBatch: async (req, res, next) => {
+    let { state } = req.query;
 
     if (state == null) state = "Y";
 
@@ -138,7 +120,6 @@ module.exports = {
         .status(200)
         .send({ error: null, message: "success", data: { batch } });
     } catch (err) {
-<<<<<<< HEAD
       next(err);
     }
   },
@@ -495,12 +476,6 @@ module.exports = {
       }
     } catch (err) {
       next(err)
-=======
-      console.log(err);
-      return res
-        .status(500)
-        .send({ error: err, message: "failure", data: null });
->>>>>>> parent of afe1484 (next() issues resolved)
     }
   },
 };

@@ -41,32 +41,18 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
-<<<<<<< HEAD
           isNumeric: true,
           min: 0,
         },
       },
-=======
-          isNumeric: true, 
-          min: 1
-        }
-      },  
->>>>>>> parent of afe1484 (next() issues resolved)
       net_balance_type2: {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
-<<<<<<< HEAD
           isNumeric: true,
           min: 0,
         },
       },
-=======
-          isNumeric: true, 
-          min: 1
-        }
-      }, 
->>>>>>> parent of afe1484 (next() issues resolved)
       type_of_change: {
         type: DataTypes.STRING(50),
         defaultValue: "Birth",

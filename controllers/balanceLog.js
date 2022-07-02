@@ -5,7 +5,7 @@ const Api404Error = require("../errors/Api404Error");
 const Op = Sequelize.Op;
 
 module.exports = {
-  addBalanceLog: async (req, res) => {
+  addBalanceLog: async (req, res, next) => {
     try {
       const { unit_id, net_balance_type1, net_balance_type2, type_of_change } =
         req.body;
@@ -36,7 +36,7 @@ module.exports = {
     }
   },
 
-  fetchBalanceLogs: async (req, res) => {
+  fetchBalanceLogs: async (req, res, next) => {
     const { from, to, batch_id } = req.query;
 
     try {
