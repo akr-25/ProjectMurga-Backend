@@ -1,31 +1,46 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+//*FeedConsumptionLog model details
+/*
+  unit_id : primary_key
+  rate : total food given daily to a unit
+  price_per_gram: food_price per gram
+*/
+
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class FeedConsumptionLog extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate({ Batch }) {
-      // define association here
-      this.belongsTo(Batch, {foreignKey: 'unit_id'})
+      this.belongsTo(Batch, { foreignKey: "unit_id" });
     }
   }
-  FeedConsumptionLog.init({
-    date: DataTypes.DATE,
-    unit_id: {
-      type: DataTypes.STRING,
-      allowNull:false
+  FeedConsumptionLog.init(
+    {
+      unit_id: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },  
+      rate: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          isNumeric: true,
+          min: 1
+        }
+      },
+      cost_per_gram: {
+        type: DataTypes.INTEGER,
+        allowNull: false, 
+        validate: {
+          isNumeric: true, 
+          min: 1
+        }
+      }
     },
-    rate: DataTypes.INTEGER,
-    cost_per_gram: DataTypes.INTEGER
-  }, {
-    sequelize,
-    tableName: 'feedconsumptionlogs', 
-    modelName: 'FeedConsumptionLog',
-  });
+    {
+      sequelize,
+      tableName: "feedconsumptionlogs",
+      modelName: "FeedConsumptionLog",
+    }
+  );
   return FeedConsumptionLog;
 };

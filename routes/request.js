@@ -1,0 +1,21 @@
+const express = require("express");
+const router = express.Router();
+const {
+  addRequest,
+  fetchRequestByUser,
+  updateRequest,
+  fetchAllRequest,
+} = require("../controllers/request");
+const SchemaValidator = require("../middleware/schemaValidator.js");
+const checkAuth = require("../middleware/checkAuth");
+const checkDate = require("../middleware/checkDate");
+
+router.get("/", checkAuth, fetchRequestByUser);
+
+router.get("/fetch/?", checkDate,  fetchAllRequest);
+
+router.post("/create",  addRequest);
+
+router.post("/update", updateRequest);
+
+module.exports = router;

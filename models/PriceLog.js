@@ -1,30 +1,36 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+//* PriceLog model details
+/*
+  unit_id: primary_key
+  price_per_unit: price of one animal of this unit
+*/
+
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class PriceLog extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate({ Batch }) {
-      // define association here
-      this.belongsTo(Batch, {foreignKey: 'unit_id'});
+      this.belongsTo(Batch, { foreignKey: "unit_id" });
     }
   }
-  PriceLog.init({
-    date: DataTypes.DATE,
-    unit_id: {
-      type:DataTypes.STRING,
-      allowNull:false
+  PriceLog.init(
+    {
+      unit_id: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      price_per_unit: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          isNumeric: true
+        }
+      } 
     },
-    price_per_unit: DataTypes.INTEGER
-  }, {
-    sequelize,
-    tableName: 'pricelogs', 
-    modelName: 'PriceLog',
-  });
+    {
+      sequelize,
+      tableName: "pricelogs",
+      modelName: "PriceLog",
+    }
+  );
   return PriceLog;
 };

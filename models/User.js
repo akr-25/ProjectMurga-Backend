@@ -1,7 +1,6 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
+
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -11,23 +10,51 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate({ Request }) {
       // define association here
-      this.hasMany(Request, {foreignKey:'applicant_id'})
+      this.hasMany(Request, { foreignKey: "applicant_id" });
     }
   }
-  User.init({
-    user_id: {
-      primaryKey:true, 
-      type: DataTypes.STRING 
+  User.init(
+    {
+      user_id: {
+        primaryKey: true,
+        type: DataTypes.UUID, 
+        defaultValue: DataTypes.UUIDV4,
+      },
+      first_name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          isAlpha: true, 
+          len: [1, 100] 
+        }
+      },
+      last_name: {
+        type: DataTypes.STRING,
+        validate: {
+          isAlpha: true, 
+          len: [1, 100] 
+        },
+      }, 
+      contact_no: {
+        type: DataTypes.STRING(10),
+        allowNull: false,
+        validate: {
+          isNumeric: true, 
+          len: [10, 10]
+        }
+      }, 
+      email: {
+        type: DataTypes.STRING,
+        validate: {
+          isEmail: true
+        } // emails are not necessary as of now
+      },
     },
-    first_name: DataTypes.STRING,
-    last_name: DataTypes.STRING,
-    contact_no: DataTypes.STRING(10),
-    email: DataTypes.STRING,
-    password: DataTypes.STRING
-  }, {
-    sequelize,
-    tableName: 'Users', 
-    modelName: 'User',
-  });
+    {
+      sequelize,
+      tableName: "Users",
+      modelName: "User",
+    }
+  );
   return User;
 };

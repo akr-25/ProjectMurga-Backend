@@ -1,22 +1,26 @@
-const express = require('express')
-const router = express.Router()
-const passport = require("passport")
+const express = require("express");
+let router = express.Router();
+const {
+  status,
+  logout,
+  login,
+  googleCallback,
+  googleLogin,
+} = require("../controllers/auth");
 
-// @desc Auth with google
-// @route GET /auth/google
+router.get("/login", (req, res) => {
+  // console.log(req.baseUrl);
+  res.render("login");
+});
 
-router.get('/google',passport.authenticate('google',{scope:['email','profile']}))
+router.get("/google", googleLogin);
 
-// @desc Google auth callback
-// @route GET /auth/google/callback
+router.get("/google/callback", googleCallback);
 
-router.get(
-    '/google/callback',
-    passport.authenticate('google',{
-        successRedirect: '/protected',
-        failureRedirect: '/'}),
-    
-)
+router.post("/login", login);
 
+router.get("/status", status);
 
-module.exports=router;
+router.post("/logout", logout);
+
+module.exports = router;
