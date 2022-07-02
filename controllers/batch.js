@@ -31,10 +31,9 @@ module.exports = {
       });
 
       let lastid = 0;
-      console.log(last_batch);
       if (last_batch != null) {
-        const v = last_batch.batch_id.toString();
-        console.log(v);
+        v = last_batch.batch_id.toString();
+
         lastid = v.split("-")[-1];
       }
 

@@ -15,7 +15,7 @@
       Bought -> new units bought from external seller
       Death -> remove units 
       Sold -> units sold to buyer
-      Converted to {batch_id} -> after a certain period of time some the following conversions may happen:
+      Converted to {BalanceLog_id} -> after a certain period of time some the following conversions may happen:
         --> eggs(hatching) -> chick/duckling
         --> chick/duckling -> growers(m/f)
         --> growers(m/f) -> layers(m/f) 
@@ -23,6 +23,7 @@
 */
 
 const { Model } = require("sequelize");
+
 module.exports = (sequelize, DataTypes) => {
   class BalanceLogLog extends Model {
     static createFromBalanceLog(BalanceLog, action) {
@@ -62,7 +63,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           isNumeric: true,
-          min: 1,
+          min: 0,
         },
       },
       net_balance_type2: {
@@ -70,7 +71,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           isNumeric: true,
-          min: 1,
+          min: 0,
         },
       },
       type_of_change: {
@@ -79,10 +80,6 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           isAlpha: true,
         },
-      },
-      action: {
-        type: DataTypes.STRING(1),
-        allowNull: false,
       },
     },
     {

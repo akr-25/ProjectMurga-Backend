@@ -1,23 +1,39 @@
 "use strict";
 const { Model } = require("sequelize");
-const { UserLog } = require("./log");
 
 module.exports = (sequelize, DataTypes) => {
-  class User extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate({ Request }) {
-      // define association here
-      this.hasMany(Request, { foreignKey: "applicant_id" });
+  class UserLog extends Model {
+    static createFromUser(User, action) {
+      return this.create({
+        first_name: User.first_name,
+        last_name: User.last_name,
+        contact_no: User.contact_no,
+        email: User.email,
+        password: User.password,
+        action: action,
+      });
+    }
+    static bulkCreateFromUser(Users, action) {
+      return this.bulkCreate(
+        Users.map((User) => ({
+          first_name: User.first_name,
+          last_name: User.last_name,
+          contact_no: User.contact_no,
+          email: User.email,
+          password: User.password,
+          action: action,
+        }))
+      );
     }
   }
-  User.init(
+  UserLog.init(
     {
-      user_id: {
+      log_id: {
+        type: DataTypes.INTEGER,
         primaryKey: true,
+        autoIncrement: true,
+      },
+      UserLog_id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
       },
@@ -56,23 +72,16 @@ module.exports = (sequelize, DataTypes) => {
           isAlphanumeric: true,
         }, // emails are not necessary as of now
       },
+      action: {
+        type: DataTypes.STRING(1),
+        allowNull: false,
+      },
     },
     {
-      hooks: {
-        afterCreate: (org, options) => UserLog.createFromUser(org, "C"),
-        afterUpdate: (org, options) => UserLog.createFromUser(org, "U"),
-        beforeDestroy: (org, options) => UserLog.createFromUser(org, "D"),
-        afterBulkCreate: (orgs, options) =>
-          UserLog.bulkCreateFromUser(orgs, "C"),
-        beforeBulkDestroy: (orgs, options) =>
-          UserLog.bulkCreateFromUser(orgs, "D"),
-        afterBulkUpdate: (orgs, options) =>
-          UserLog.bulkCreateFromUser(orgs, "U"),
-      },
       sequelize,
-      tableName: "Users",
-      modelName: "User",
+      tableName: "UserLogs",
+      modelName: "UserLog",
     }
   );
-  return User;
+  return UserLog;
 };
