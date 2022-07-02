@@ -42,7 +42,6 @@ app.use("/api/priceLog", require("./routes/priceLog"));
 app.use("/api/batch", require("./routes/batch"));
 app.use("/api/user", require("./routes/user"));
 app.use("/api/request", require("./routes/request"));
-app.use("/api/organization", require("./routes/organization"));
 
 app.use("/dashboard", require("./routes/dashboard"));
 app.use("/", require("./routes/index"));
