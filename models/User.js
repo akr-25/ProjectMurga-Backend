@@ -49,6 +49,12 @@ module.exports = (sequelize, DataTypes) => {
           isEmail: true
         } // emails are not necessary as of now
       },
+      address: {
+        type: DataTypes.STRING,
+        validate: {
+          isAlphanumeric: true
+        } // emails are not necessary as of now
+      },
     },
     {
       sequelize,
