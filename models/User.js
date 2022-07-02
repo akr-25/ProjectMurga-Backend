@@ -25,14 +25,14 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           isAlpha: true, 
-          len: [2, 100] 
+          len: [1, 100] 
         }
       },
       last_name: {
         type: DataTypes.STRING,
         validate: {
           isAlpha: true, 
-          len: [2, 100] 
+          len: [1, 100] 
         },
       }, 
       contact_no: {
@@ -48,14 +48,6 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           isEmail: true
         } // emails are not necessary as of now
-      },
-      password: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          isAlphanumeric: true,
-          len: [6, 20]
-        }
       },
     },
     {
