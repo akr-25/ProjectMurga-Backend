@@ -474,8 +474,9 @@ module.exports = {
           .status(200)
           .send({ error: null, message: "success", data: { batch } });
       }
-    } catch (err) {
-      next(err)
+    } catch (e) {
+      console.log(e);
+      res.status(500).send({ error: e, message: "failure", data: null });
     }
   },
 };
