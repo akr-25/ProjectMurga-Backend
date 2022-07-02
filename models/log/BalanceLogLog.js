@@ -23,16 +23,36 @@
 */
 
 const { Model } = require("sequelize");
-const { BalanceLogLog } = require("./log");
-
 module.exports = (sequelize, DataTypes) => {
-  class BalanceLog extends Model {
-    static associate({ Batch }) {
-      this.belongsTo(Batch, { foreignKey: "unit_id" });
+  class BalanceLogLog extends Model {
+    static createFromBalanceLog(BalanceLog, action) {
+      return this.create({
+        unit_id: BalanceLog.unit_id,
+        net_balance_type1: BalanceLog.net_balance_type1,
+        net_balance_type2: BalanceLog.net_balance_type2,
+        type_of_change: BalanceLog.type_of_change,
+        action: action,
+      });
+    }
+    static bulkCreateFromBalanceLog(BalanceLogs, action) {
+      return this.bulkCreate(
+        BalanceLogs.map((BalanceLog) => ({
+          unit_id: BalanceLog.unit_id,
+          net_balance_type1: BalanceLog.net_balance_type1,
+          net_balance_type2: BalanceLog.net_balance_type2,
+          type_of_change: BalanceLog.type_of_change,
+          action: action,
+        }))
+      );
     }
   }
-  BalanceLog.init(
+  BalanceLogLog.init(
     {
+      log_id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
       unit_id: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -42,7 +62,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           isNumeric: true,
-          min: 0,
+          min: 1,
         },
       },
       net_balance_type2: {
@@ -50,7 +70,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           isNumeric: true,
-          min: 0,
+          min: 1,
         },
       },
       type_of_change: {
@@ -60,26 +80,16 @@ module.exports = (sequelize, DataTypes) => {
           isAlpha: true,
         },
       },
+      action: {
+        type: DataTypes.STRING(1),
+        allowNull: false,
+      },
     },
     {
-      hooks: {
-        afterCreate: (org, options) =>
-          BalanceLogLog.createFromBalanceLog(org, "C"),
-        afterUpdate: (org, options) =>
-          BalanceLogLog.createFromBalanceLog(org, "U"),
-        beforeDestroy: (org, options) =>
-          BalanceLogLog.createFromBalanceLog(org, "D"),
-        afterBulkCreate: (orgs, options) =>
-          BalanceLogLog.bulkCreateFromBalanceLog(orgs, "C"),
-        beforeBulkDestroy: (orgs, options) =>
-          BalanceLogLog.bulkCreateFromBalanceLog(orgs, "D"),
-        afterBulkUpdate: (orgs, options) =>
-          BalanceLogLog.bulkCreateFromBalanceLog(orgs, "U"),
-      },
       sequelize,
-      tableName: "balancelogs",
-      modelName: "BalanceLog",
+      tableName: "balancelogslogs",
+      modelName: "BalanceLogLog",
     }
   );
-  return BalanceLog;
+  return BalanceLogLog;
 };
