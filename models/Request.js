@@ -25,18 +25,24 @@ module.exports = (sequelize, DataTypes) => {
       }, 
       order_status: {
         type: DataTypes.STRING(50),
-        allowNull: false
+        allowNull: false, 
+        validate: {
+          isAlpha: true
+        }
       },  
       type_of_unit: {
         type: DataTypes.STRING(20),
-        allowNull: false
+        allowNull: false,
+        validate: {
+          isAlpha: true
+        }
       },
       req_no_of_units_type1: {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
           isNumeric: true, 
-          min: 1 
+          min: 0
         }
       },
       req_no_of_units_type2: {
@@ -44,17 +50,24 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           isNumeric: true, 
-          min: 1 
+          min: 0
         }
       },
       selling_price_per_unit: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        validate: {
+          isNumeric: true, 
+          min: 0
+        }
       }, 
       order_type: {
         type: DataTypes.STRING(10),
         defaultValue : "SELL", 
-        allowNull: false
+        allowNull: false, 
+        validate : {
+          isAlpha: true
+        }
       },
     },
     {
