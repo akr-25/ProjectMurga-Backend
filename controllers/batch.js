@@ -93,38 +93,8 @@ module.exports = {
         .send({ error: null, message: "success", data: { batch } });
     } catch (err) {
 <<<<<<< HEAD
-<<<<<<< HEAD
       next(err);
 =======
-      return res
-        .status(500)
-        .send({ error: err, message: "failure", data: null });
->>>>>>> parent of afe1484 (next() issues resolved)
-=======
-      await t.rollback()
-
-      next(err)
-    }
-  },
-
-  updateBatch: async (req, res) => {
-    //? needed for deactivating a batch 
-
-    try {
-      const { is_active, batch_id } = req.body; 
-
-      const rows_updated = await Batch.update({is_active: is_active}, {
-        where: {batch_id : batch_id}
-      }); 
-
-      if(rows_updated == 0){
-        throw new Api404Error(`no batch with batch_id: ${batch_id} found`) 
-      }
-      
-      return res
-      .status(200)
-      .send({ error: null, message: "success", data: { batch } });
-    } catch (err) {
       return res
         .status(500)
         .send({ error: err, message: "failure", data: null });
@@ -144,18 +114,12 @@ module.exports = {
         .send({ error: null, message: "success", data: { transaction } });
     } catch (err) {
 <<<<<<< HEAD
-<<<<<<< HEAD
       next(err);
 =======
-=======
->>>>>>> parent of afe1484 (next() issues resolved)
       // console.log(err);
       return res
         .status(500)
         .send({ error: err, message: "failure", data: null });
-<<<<<<< HEAD
->>>>>>> parent of afe1484 (next() issues resolved)
-=======
 >>>>>>> parent of afe1484 (next() issues resolved)
     }
   },
@@ -174,7 +138,6 @@ module.exports = {
         .status(200)
         .send({ error: null, message: "success", data: { batch } });
     } catch (err) {
-<<<<<<< HEAD
 <<<<<<< HEAD
       next(err);
     }
@@ -533,15 +496,10 @@ module.exports = {
     } catch (err) {
       next(err)
 =======
-=======
->>>>>>> parent of afe1484 (next() issues resolved)
       console.log(err);
       return res
         .status(500)
         .send({ error: err, message: "failure", data: null });
-<<<<<<< HEAD
->>>>>>> parent of afe1484 (next() issues resolved)
-=======
 >>>>>>> parent of afe1484 (next() issues resolved)
     }
   },
