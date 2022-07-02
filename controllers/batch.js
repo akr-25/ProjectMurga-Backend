@@ -105,8 +105,7 @@ module.exports = {
 
     try {
       const batch = await Batch.findAll({
-        where: { is_active: state },
-        include: Transaction,
+        where: { is_active: state }
       });
       return res
         .status(200)

@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(50),
         allowNull: false, 
         validate: {
-          isAlpha: true
+          is:["^[A-Za-z0-9 -]+$"]
         }
       },  
       type_of_unit: {
