@@ -16,19 +16,19 @@ module.exports = {
       const batch_code = getBatchCode(type, sub_type); 
       const search_code = String(batch_code + "%"); 
 
-      const last_batch = await Batch.findOne( 
-        {
-          raw: true, 
-          where: {
-            batch_id: {[Op.like] : search_code }
-          },
-          order: [ [ 'createdAt', 'DESC' ]],
-        }
-      );
-      
-      let lastid = 0
-      if(last_batch != null){
-        lastid = String(last_batch.batch_id).split("-").at(-1); 
+      const last_batch = await Batch.findOne({
+        raw: true,
+        where: {
+          batch_id: { [Op.like]: search_code },
+        },
+        order: [["createdAt", "DESC"]],
+      });
+
+      let lastid = 0;
+      if (last_batch != null) {
+        v = last_batch.batch_id.toString();
+
+        lastid = v.split("-")[-1];
       }
       
       if(lastid == null) lastid = 0; 

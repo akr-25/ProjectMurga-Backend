@@ -12,14 +12,11 @@
 */
 
 const { Model } = require("sequelize");
+const { BatchLog } = require("./log");
+
 module.exports = (sequelize, DataTypes) => {
   class Batch extends Model {
-    static associate({
-      Request,
-      FeedConsumptionLog,
-      PriceLog,
-      BalanceLog,
-    }) {
+    static associate({ Request, FeedConsumptionLog, PriceLog, BalanceLog }) {
       this.hasMany(Request, { foreignKey: "unit_id" });
       this.hasMany(FeedConsumptionLog, { foreignKey: "unit_id" });
       this.hasMany(PriceLog, { foreignKey: "unit_id" });
@@ -35,14 +32,25 @@ module.exports = (sequelize, DataTypes) => {
       is_active: {
         type: DataTypes.STRING(1),
         allowNull: false,
-        defaultValue: "Y", 
+        defaultValue: "Y",
         validate: {
-          isAlpha: true, 
-          len :[1,1] 
-        } 
+          isAlpha: true,
+          len: [1, 1],
+        },
       },
     },
     {
+      hooks: {
+        afterCreate: (org, options) => BatchLog.createFromBatch(org, "C"),
+        afterUpdate: (org, options) => BatchLog.createFromBatch(org, "U"),
+        beforeDestroy: (org, options) => BatchLog.createFromBatch(org, "D"),
+        afterBulkCreate: (orgs, options) =>
+          BatchLog.bulkCreateFromBatch(orgs, "C"),
+        beforeBulkDestroy: (orgs, options) =>
+          BatchLog.bulkCreateFromBatch(orgs, "D"),
+        afterBulkUpdate: (orgs, options) =>
+          BatchLog.bulkCreateFromBatch(orgs, "U"),
+      },
       sequelize,
       tableName: "batches",
       modelName: "Batch",

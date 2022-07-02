@@ -6,6 +6,8 @@
 */
 
 const { Model } = require("sequelize");
+const { PriceLogLog } = require("./log");
+
 module.exports = (sequelize, DataTypes) => {
   class PriceLog extends Model {
     static associate({ Batch }) {
@@ -22,11 +24,23 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
-          isNumeric: true
-        }
-      } 
+          isNumeric: true,
+        },
+      },
     },
     {
+      hooks: {
+        afterCreate: (org, options) => PriceLogLog.createFromPriceLog(org, "C"),
+        afterUpdate: (org, options) => PriceLogLog.createFromPriceLog(org, "U"),
+        beforeDestroy: (org, options) =>
+          PriceLogLog.createFromPriceLog(org, "D"),
+        afterBulkCreate: (orgs, options) =>
+          PriceLogLog.bulkCreateFromPriceLog(orgs, "C"),
+        beforeBulkDestroy: (orgs, options) =>
+          PriceLogLog.bulkCreateFromPriceLog(orgs, "D"),
+        afterBulkUpdate: (orgs, options) =>
+          PriceLogLog.bulkCreateFromPriceLog(orgs, "U"),
+      },
       sequelize,
       tableName: "pricelogs",
       modelName: "PriceLog",

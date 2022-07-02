@@ -1,18 +1,45 @@
 "use strict";
 const { Model } = require("sequelize");
-const { RequestLog } = require("./log");
 
 module.exports = (sequelize, DataTypes) => {
-  class Request extends Model {
-    static associate({ User, Batch }) {
-      this.belongsTo(User, { foreignKey: "applicant_id" });
-      this.belongsTo(Batch, { foreignKey: "unit_id" });
+  class RequestLog extends Model {
+    static createFromRequest(Request, action) {
+      return this.create({
+        applicant_id: Request.applicant_id,
+        unit_id: Request.unit_id,
+        order_status: Request.order_status,
+        type_of_unit: Request.type_of_unit,
+        req_no_of_units_type1: Request.req_no_of_units_type1,
+        req_no_of_units_type2: Request.req_no_of_units_type2,
+        selling_price_per_unit: Request.selling_price_per_unit,
+        order_type: Request.order_type,
+        action: action,
+      });
+    }
+    static bulkCreateFromRequest(Requests, action) {
+      return this.bulkCreate(
+        Requests.map((Request) => ({
+          applicant_id: Request.applicant_id,
+          unit_id: Request.unit_id,
+          order_status: Request.order_status,
+          type_of_unit: Request.type_of_unit,
+          req_no_of_units_type1: Request.req_no_of_units_type1,
+          req_no_of_units_type2: Request.req_no_of_units_type2,
+          selling_price_per_unit: Request.selling_price_per_unit,
+          order_type: Request.order_type,
+          action: action,
+        }))
+      );
     }
   }
-  Request.init(
+  RequestLog.init(
     {
-      request_id: {
+      log_id: {
+        type: DataTypes.INTEGER,
         primaryKey: true,
+        autoIncrement: true,
+      },
+      RequestLog_id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
       },
@@ -69,24 +96,17 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           isAlpha: true,
         },
+        action: {
+          type: DataTypes.STRING(1),
+          allowNull: false,
+        },
       },
     },
     {
-      hooks: {
-        afterCreate: (org, options) => RequestLog.createFromRequest(org, "C"),
-        afterUpdate: (org, options) => RequestLog.createFromRequest(org, "U"),
-        beforeDestroy: (org, options) => RequestLog.createFromRequest(org, "D"),
-        afterBulkCreate: (orgs, options) =>
-          RequestLog.bulkCreateFromRequest(orgs, "C"),
-        beforeBulkDestroy: (orgs, options) =>
-          RequestLog.bulkCreateFromRequest(orgs, "D"),
-        afterBulkUpdate: (orgs, options) =>
-          RequestLog.bulkCreateFromRequest(orgs, "U"),
-      },
       sequelize,
-      tableName: "requests",
-      modelName: "Request",
+      tableName: "RequestLogs",
+      modelName: "RequestLog",
     }
   );
-  return Request;
+  return RequestLog;
 };

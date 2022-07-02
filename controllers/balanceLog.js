@@ -10,8 +10,8 @@ const Op = Sequelize.Op;
 module.exports = {
   addBalanceLog: async (req, res, next) => {
     try {
-      const {unit_id, net_balance_type1, net_balance_type2, type_of_change } = req.body; 
-
+      const { unit_id, net_balance_type1, net_balance_type2, type_of_change } =
+        req.body;
       const batch = await Batch.findOne({
         where: { 
           batch_id: unit_id,
@@ -29,7 +29,8 @@ module.exports = {
         net_balance_type2: net_balance_type2,
         type_of_change: type_of_change, 
       });
-      
+      console.log(req.body);
+
       return res
       .status(201) 
       .send({error: null , message: "success", data: { balanceLog },});
