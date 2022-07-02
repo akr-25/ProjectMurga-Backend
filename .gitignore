@@ -2,3 +2,4 @@ node_modules/
 migrations/
 .env
 config/config.json
+config/config.env
