@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           isNumeric: true,
-          min: 1
+          min: 0
         }
       },
       cost_per_gram: {
@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false, 
         validate: {
           isNumeric: true, 
-          min: 1
+          min: 0
         }
       }
     },

@@ -10,7 +10,7 @@ const Api400Error = require("../errors/api400Error");
 const Op = Sequelize.Op;
 
 module.exports = {
-  addFeedConsumption: async (req, res) => {
+  addFeedConsumption: async (req, res, next) => {
     try {
       const {unit_id , rate, cost_per_gram} = req.body; 
       const batch = await Batch.findOne({
@@ -38,12 +38,11 @@ module.exports = {
       .status(201)
       .send({error: null, message: "success", data: { feedConsumption } });
     } catch (err) {
-      return res
-        .send({ error: err, message: "failure", data: null });
+      next(err)
     }
   },
 
-  fetchFeedConsumptionLogs: async (req, res) => {
+  fetchFeedConsumptionLogs: async (req, res, next) => {
     let { from, to } = req.query;
 
     try {
@@ -74,10 +73,7 @@ module.exports = {
         .status(200)
         .send({ error: null, message: "success", data: { feedlogs } });
     } catch (err) {
-      console.log(err);
-      return res
-        .status(500)
-        .send({ error: err, message: "failure", data: null });
+      next(err)
     }
   },
 };
