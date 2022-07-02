@@ -8,7 +8,7 @@ const Api404Error = require("../errors/api404Error");
 const Op = Sequelize.Op;
 
 module.exports = {
-  addPriceLog: async (req, res) => {
+  addPriceLog: async (req, res, next) => {
     try {
       const { unit_id, price_per_unit } = req.body;
 
@@ -37,7 +37,7 @@ module.exports = {
     }
   },
 
-  fetchPriceLogs: async (req, res) => {
+  fetchPriceLogs: async (req, res, next) => {
     let { from, to } = req.query;
     
     //* from & to have been checked in middleware, they DO NOT CONTAIN NULL values   
