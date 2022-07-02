@@ -9,7 +9,7 @@ const Api404Error = require("../errors/api404Error");
 const Op = Sequelize.Op;
 
 module.exports = {
-  addRequest: async (req, res, next) => {
+  addRequest: async (req, res) => {
     try {
       const { applicant_id, unit_id, order_status, type_of_unit, req_no_of_units_type1, req_no_of_units_type2, selling_price_per_unit, order_type } = req.body; 
       
@@ -33,7 +33,7 @@ module.exports = {
       }
   },
 
-  updateRequest: async (req, res, next) => {
+  updateRequest: async (req, res) => {
     try {
       console.log(req.body); 
       
@@ -48,7 +48,7 @@ module.exports = {
     }
   },
 
-  fetchAllRequest: async (req, res, next) => {
+  fetchAllRequest: async (req, res) => {
     const { from, to } = req.query;
 
     try {
@@ -75,7 +75,7 @@ module.exports = {
     }
   },
 
-  fetchRequestByUser: async (req, res, next) => {
+  fetchRequestByUser: async (req, res) => {
     try {
       
       const request = await User.findOne({

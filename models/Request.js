@@ -25,13 +25,12 @@ module.exports = (sequelize, DataTypes) => {
       }, 
       invoice_id: {
         type: DataTypes.INTEGER,
-        autoIncrement: true
       }, 
       order_status: {
         type: DataTypes.STRING(50),
         allowNull: false, 
-        validate: {
-          isAlpha: true
+        validate : {
+          is:["^[A-Za-z0-9 -]+$"]
         }
       },  
       type_of_unit: {
