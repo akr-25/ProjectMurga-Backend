@@ -1,0 +1,2 @@
+date,unit_id,previous_balance_male,previous_balance_female,Recieved_Male,Recieved_Female,Transfer_to_grower_Male,Transfer_to_grower_Female,Mortality_Male,Mortality_Female,type_of_unit,Total_Male,Total_Female,Feed_Consumption_Rate,Feed_Cost,Total_Feed_Consumed,Sale_Male,Sale_Female,Buyer_info,Sale_Rate,Amount,order_type
+30/6/2022,DG-1,10,10000000,0,0,10,10000000,0,0,grower,20,20000000,2,111,40000040,5,5,first_name,3,30,BUY

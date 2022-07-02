@@ -1,0 +1,25 @@
+{
+    "development": {
+        "username": null,
+        "password": null,
+        "database": "murga_db",
+        "host": "localhost",
+        "dialect": "mysql",
+        "logging": false
+    },
+    "test": {
+        "username": null,
+        "password": null,
+        "database": "database_test",
+        "logging": false,
+        "host": "127.0.0.1",
+        "dialect": "mysql"
+    },
+    "production": {
+        "username": null,
+        "password": null,
+        "database": "database_production",
+        "host": "127.0.0.1",
+        "dialect": "mysql"
+    }
+}
