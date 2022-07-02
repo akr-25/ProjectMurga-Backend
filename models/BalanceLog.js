@@ -41,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           isNumeric: true, 
-          min: 1
+          min: 0
         }
       },  
       net_balance_type2: {
@@ -49,7 +49,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           isNumeric: true, 
-          min: 1
+          min: 0
         }
       }, 
       type_of_change: {
