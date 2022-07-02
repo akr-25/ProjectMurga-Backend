@@ -5,6 +5,8 @@ const {
 
 const Sequelize = require('sequelize');
 const { getBatchCode } = require("../utils/getBatchCode");
+const Api404Error = require("../errors/Api404Error");
+const Api400Error = require("../errors/api400Error");
 const Op = Sequelize.Op;
 
 module.exports = {
@@ -19,7 +21,7 @@ module.exports = {
       });
 
       if(batch == null){
-        throw `batch ${req.body.unit_id} not found`;
+        throw new Api404Error(`batch ${req.body.unit_id} not found`);
       }
 
       const feedConsumption = await batch.createFeedConsumptionLog({
@@ -27,12 +29,16 @@ module.exports = {
         rate: rate,
         cost_per_gram: cost_per_gram, 
       });
+
+      if(feedConsumption == null){
+        throw new Api400Error("feedconsumptionlog cannot be created. try again later")
+      }
+
       return res
       .status(201)
       .send({error: null, message: "success", data: { feedConsumption } });
     } catch (err) {
       return res
-        .status(500)
         .send({ error: err, message: "failure", data: null });
     }
   },
@@ -60,8 +66,8 @@ module.exports = {
         }
       });
 
-      if(feedlogs.length == 0){
-        throw `no active feedlogs exist`
+      if(feedlogs == null){
+        throw new Api404Error(`no active feedlogs exist`) 
       }
 
       return res

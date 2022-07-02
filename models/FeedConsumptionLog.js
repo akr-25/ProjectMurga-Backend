@@ -21,11 +21,19 @@ module.exports = (sequelize, DataTypes) => {
       },  
       rate: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        validate: {
+          isNumeric: true,
+          min: 1
+        }
       },
       cost_per_gram: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false, 
+        validate: {
+          isNumeric: true, 
+          min: 1
+        }
       }
     },
     {

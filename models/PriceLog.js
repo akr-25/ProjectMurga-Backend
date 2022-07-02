@@ -20,7 +20,10 @@ module.exports = (sequelize, DataTypes) => {
       },
       price_per_unit: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        validate: {
+          isNumeric: true
+        }
       } 
     },
     {

@@ -4,6 +4,7 @@ const {
 } = require("../models");
 
 const Sequelize = require('sequelize');
+const Api404Error = require("../errors/api404Error");
 const Op = Sequelize.Op;
 
 module.exports = {
@@ -32,9 +33,7 @@ module.exports = {
       .send({ error: null, message: "success", data: { priceLog } });
 
     } catch (err) {
-      return res
-        .status(500)
-        .send({ error: err, message: "failure", data: null });
+      next(err)
     }
   },
 
@@ -50,32 +49,31 @@ module.exports = {
         },
         include: {
           model: PriceLog, 
+          limit: 1, 
+          separate: true, 
           required: true, 
           where: {
             createdAt: {
               [Op.and]: [
                 { [Op.gte]: Date.parse(from) },
                 { [Op.lte]: Date.parse(to) },
-              ], //! fetch l;atest prive
+              ], 
               // all pricelogs such that pricelogs.date >= start
             },
           },
-          limit: 1, 
           order: [ [ 'updatedAt', 'DESC' ]],
         }
       });
 
-      if(pricelogs.length == 0){
-        throw "no active pricelogs exist"
-      }   
+      if(pricelogs == null){
+        throw new Api404Error("no active pricelogs exist")
+      }
 
       return res
         .status(200)
         .send({ error: null, message: "success", data: { pricelogs } });
     } catch (err) {
-      return res
-        .status(500)
-        .send({ error: err, message: "failure", data: null });
+      next(err)
     }
   },
 };
