@@ -29,6 +29,7 @@
     "ejs": "^3.1.6",
     "express": "^4.17.2",
     "express-session": "^1.17.2",
+    "firebase": "^9.8.4",
     "helmet": "^5.0.2",
     "http-errors": "^2.0.0",
     "joi": "^17.6.0",
