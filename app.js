@@ -33,42 +33,6 @@ app.use(helmet());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-//Load config
-dotenv.config({path:'./config/config.env'});
-
-// Passport
-require('./config/passport')(passport);
-
-// Views
-app.set('view engine', 'ejs');
-app.set('views', './views');
-
-
-// Sessions
-app.use(
-    session({
-    secret: 'keyboard cat',
-    resave: false,
-    saveUninitialized: true
-  })
-)
-  
-// Passport middleware
-app.use(passport.initialize());
-app.use(passport.session());
-
-
-// Static folder
-app.use(express.static(path.join(__dirname,'public')));
-
-
-//--------------------------------------------------
-
-// Routes
-app.use('/',require('./routes/index'));
-app.use('/auth',require('./routes/auth'));
-
-
 
 // Routes
 app.use("/auth", require("./routes/auth"));
@@ -78,6 +42,7 @@ app.use("/api/priceLog", require("./routes/priceLog"));
 app.use("/api/batch", require("./routes/batch"));
 app.use("/api/user", require("./routes/user"));
 app.use("/api/request", require("./routes/request"));
+app.use("/api/organization", require("./routes/organization"));
 
 app.use("/dashboard", require("./routes/dashboard"));
 app.use("/", require("./routes/index"));
