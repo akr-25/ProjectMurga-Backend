@@ -5,6 +5,7 @@ const cors = require("cors");
 const helmet = require("helmet");
 const { sequelize } = require("./models");
 const passport = require("passport");
+const {errorHandler} = require('./errors/errorHandler');
 
 // importing this for its side effects only, which is to configure passport
 require("./passportConfig/passport.js");
@@ -32,6 +33,7 @@ app.use(helmet());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+
 // Routes
 app.use("/auth", require("./routes/auth"));
 app.use("/api/balanceLog", require("./routes/balanceLog"));
@@ -43,17 +45,10 @@ app.use("/api/request", require("./routes/request"));
 
 app.use("/dashboard", require("./routes/dashboard"));
 app.use("/", require("./routes/index"));
+// app.use('*', error404 page);
 
 //* Error Handler
-app.use((err, req, res, next) => {
-  res.status(err.status || 500);
-  res.json({
-    error: {
-      status: err.status || 500,
-      message: err.message,
-    },
-  });
-});
+app.use(errorHandler);
 
 const server = app.listen(process.env.PORT || 3001, async () => {
   console.log(`Server is running on http://localhost:${server.address().port}`);

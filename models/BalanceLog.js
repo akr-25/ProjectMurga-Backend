@@ -38,14 +38,25 @@ module.exports = (sequelize, DataTypes) => {
       net_balance_type1: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        validate: {
+          isNumeric: true,
+          min: 1,
+        },
       },
       net_balance_type2: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        validate: {
+          isNumeric: true,
+          min: 1,
+        },
       },
       type_of_change: {
         type: DataTypes.STRING(50),
         defaultValue: "Birth",
+        validate: {
+          isAlpha: true,
+        },
       },
     },
     {
