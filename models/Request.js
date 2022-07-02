@@ -23,10 +23,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING, 
         allowNull: false,
       }, 
-      invoice_id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true
-      }, 
       order_status: {
         type: DataTypes.STRING(50),
         allowNull: false, 
