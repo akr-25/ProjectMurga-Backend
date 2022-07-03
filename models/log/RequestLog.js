@@ -39,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      RequestLog_id: {
+      request_id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
       },

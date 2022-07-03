@@ -33,8 +33,7 @@ module.exports = {
       let lastid = 0;
       if (last_batch != null) {
         v = last_batch.batch_id.toString();
-
-        lastid = v.split("-")[-1];
+        lastid = v.split("-")[1];
       }
 
       if (lastid == null) lastid = 0;
