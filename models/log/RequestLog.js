@@ -57,9 +57,6 @@ module.exports = (sequelize, DataTypes) => {
       order_status: {
         type: DataTypes.STRING(50),
         allowNull: false,
-        validate: {
-          isAlpha: true,
-        },
       },
       type_of_unit: {
         type: DataTypes.STRING(20),

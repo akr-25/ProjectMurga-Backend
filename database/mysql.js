@@ -21,7 +21,7 @@ let sequelize = new Sequelize(
   }
 );
 let sequelizelog = new Sequelize(
-  "murga_log",
+  process.env.DB_LOG_NAME,
   process.env.DB_USER,
   process.env.DB_PASS,
   {

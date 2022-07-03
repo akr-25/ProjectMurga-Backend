@@ -76,4 +76,26 @@ module.exports = {
       next(err)
     }
   },
+  fetchAllFeedLogs: async (req, res, next) => {
+    const { batch_id } = req.query;
+
+    try {
+        const feedconsumptionlogs = await FeedConsumptionLog.findAll({
+          where: {
+            unit_id: batch_id
+          },
+        });
+
+        if (feedconsumptionlogs == null) {
+          throw new Api404Error("no active balancelogs exist");
+        }
+
+        return res
+          .status(200)
+          .send({ error: null, message: "success", data: { feedconsumptionlogs } });
+    }
+    catch (err) {
+      next(err);
+    }
+  }
 };
