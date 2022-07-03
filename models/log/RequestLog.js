@@ -5,6 +5,8 @@ module.exports = (sequelize, DataTypes) => {
   class RequestLog extends Model {
     static createFromRequest(Request, action) {
       return this.create({
+        request_id: Request.request_id,
+
         applicant_id: Request.applicant_id,
         unit_id: Request.unit_id,
         order_status: Request.order_status,
@@ -19,6 +21,7 @@ module.exports = (sequelize, DataTypes) => {
     static bulkCreateFromRequest(Requests, action) {
       return this.bulkCreate(
         Requests.map((Request) => ({
+          request_id: Request.request_id,
           applicant_id: Request.applicant_id,
           unit_id: Request.unit_id,
           order_status: Request.order_status,

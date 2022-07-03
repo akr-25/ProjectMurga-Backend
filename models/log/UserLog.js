@@ -5,6 +5,7 @@ module.exports = (sequelize, DataTypes) => {
   class UserLog extends Model {
     static createFromUser(User, action) {
       return this.create({
+        user_id: User.user_id,
         first_name: User.first_name,
         last_name: User.last_name,
         contact_no: User.contact_no,
@@ -16,6 +17,8 @@ module.exports = (sequelize, DataTypes) => {
     static bulkCreateFromUser(Users, action) {
       return this.bulkCreate(
         Users.map((User) => ({
+          user_id: User.user_id,
+
           first_name: User.first_name,
           last_name: User.last_name,
           contact_no: User.contact_no,
@@ -41,14 +44,14 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          isAlpha: true,
+          // isAlpha: true,
           len: [1, 100],
         },
       },
       last_name: {
         type: DataTypes.STRING,
         validate: {
-          isAlpha: true,
+          //   isAlpha: true,
           len: [1, 100],
         },
       },
