@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      UserLog_id: {
+      user_id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
       },
