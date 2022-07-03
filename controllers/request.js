@@ -44,6 +44,7 @@ module.exports = {
       }); 
       return res.send({ error: null, message: "success", data: { request } });
     } catch (err) {
+      console.log(err)
       next(err)
     }
   },

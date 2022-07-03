@@ -10,7 +10,7 @@ module.exports.errorHandler = (err, req, res, next) => {
     new_err["message"] = err.errors[0].message
     new_err["at"] = err.errors[0].value
   }
-  else new_err = err;
+  else new_err["error"] = err;
   // console.log(err)
   //! auth controller errors are not handled yet
   //! don't know if there are other possible sequelize errors?
