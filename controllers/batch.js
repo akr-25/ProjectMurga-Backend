@@ -56,10 +56,7 @@ module.exports = {
         .status(201)
         .send({ error: null, message: "success", data: { batch, balancelog } });
     } catch (err) {
-      console.log(err);
-      return res
-        .status(500)
-        .send({ error: err, message: "failure", data: null });
+      next(err)
     }
   },
 
