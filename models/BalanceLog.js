@@ -69,12 +69,12 @@ module.exports = (sequelize, DataTypes) => {
           BalanceLogLog.createFromBalanceLog(org, "U"),
         beforeDestroy: (org, options) =>
           BalanceLogLog.createFromBalanceLog(org, "D"),
-        afterBulkCreate: (orgs, options) =>
-          BalanceLogLog.bulkCreateFromBalanceLog(orgs, "C"),
-        beforeBulkDestroy: (orgs, options) =>
-          BalanceLogLog.bulkCreateFromBalanceLog(orgs, "D"),
-        afterBulkUpdate: (orgs, options) =>
-          BalanceLogLog.bulkCreateFromBalanceLog(orgs, "U"),
+        // afterBulkCreate: (orgs, options) =>
+        //   BalanceLogLog.bulkCreateFromBalanceLog(orgs, "C"),
+        // beforeBulkDestroy: (orgs, options) =>
+        //   BalanceLogLog.bulkCreateFromBalanceLog(orgs, "D"),
+        // afterBulkUpdate: (orgs, options) =>
+        //   BalanceLogLog.bulkCreateFromBalanceLog(orgs, "U"),
       },
       sequelize,
       tableName: "balancelogs",

@@ -44,12 +44,12 @@ module.exports = (sequelize, DataTypes) => {
         afterCreate: (org, options) => BatchLog.createFromBatch(org, "C"),
         afterUpdate: (org, options) => BatchLog.createFromBatch(org, "U"),
         beforeDestroy: (org, options) => BatchLog.createFromBatch(org, "D"),
-        afterBulkCreate: (orgs, options) =>
-          BatchLog.bulkCreateFromBatch(orgs, "C"),
-        beforeBulkDestroy: (orgs, options) =>
-          BatchLog.bulkCreateFromBatch(orgs, "D"),
-        afterBulkUpdate: (orgs, options) =>
-          BatchLog.bulkCreateFromBatch(orgs, "U"),
+        // afterBulkCreate: (orgs, options) =>
+        //   BatchLog.bulkCreateFromBatch(orgs, "C"),
+        // beforeBulkDestroy: (orgs, options) =>
+        //   BatchLog.bulkCreateFromBatch(orgs, "D"),
+        // afterBulkUpdate: (orgs, options) =>
+        //   BatchLog.bulkCreateFromBatch(orgs, "U"),
       },
       sequelize,
       tableName: "batches",

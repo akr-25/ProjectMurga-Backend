@@ -34,12 +34,12 @@ module.exports = (sequelize, DataTypes) => {
         afterUpdate: (org, options) => PriceLogLog.createFromPriceLog(org, "U"),
         beforeDestroy: (org, options) =>
           PriceLogLog.createFromPriceLog(org, "D"),
-        afterBulkCreate: (orgs, options) =>
-          PriceLogLog.bulkCreateFromPriceLog(orgs, "C"),
-        beforeBulkDestroy: (orgs, options) =>
-          PriceLogLog.bulkCreateFromPriceLog(orgs, "D"),
-        afterBulkUpdate: (orgs, options) =>
-          PriceLogLog.bulkCreateFromPriceLog(orgs, "U"),
+        // afterBulkCreate: (orgs, options) =>
+        //   PriceLogLog.bulkCreateFromPriceLog(orgs, "C"),
+        // beforeBulkDestroy: (orgs, options) =>
+        //   PriceLogLog.bulkCreateFromPriceLog(orgs, "D"),
+        // afterBulkUpdate: (orgs, options) =>
+        //   PriceLogLog.bulkCreateFromPriceLog(orgs, "U"),
       },
       sequelize,
       tableName: "pricelogs",

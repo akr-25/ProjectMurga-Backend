@@ -46,12 +46,12 @@ module.exports = (sequelize, DataTypes) => {
           FeedConsumptionLogLog.createFromFeedConsumptionLog(org, "U"),
         beforeDestroy: (org, options) =>
           FeedConsumptionLogLog.createFromFeedConsumptionLog(org, "D"),
-        afterBulkCreate: (orgs, options) =>
-          FeedConsumptionLogLog.bulkCreateFromFeedConsumptionLog(orgs, "C"),
-        beforeBulkDestroy: (orgs, options) =>
-          FeedConsumptionLogLog.bulkCreateFromFeedConsumptionLog(orgs, "D"),
-        afterBulkUpdate: (orgs, options) =>
-          FeedConsumptionLogLog.bulkCreateFromFeedConsumptionLog(orgs, "U"),
+        // afterBulkCreate: (orgs, options) =>
+        //   FeedConsumptionLogLog.bulkCreateFromFeedConsumptionLog(orgs, "C"),
+        // beforeBulkDestroy: (orgs, options) =>
+        //   FeedConsumptionLogLog.bulkCreateFromFeedConsumptionLog(orgs, "D"),
+        // afterBulkUpdate: (orgs, options) =>
+        //   FeedConsumptionLogLog.bulkCreateFromFeedConsumptionLog(orgs, "U"),
       },
       sequelize,
       tableName: "feedconsumptionlogs",

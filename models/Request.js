@@ -76,12 +76,12 @@ module.exports = (sequelize, DataTypes) => {
         afterCreate: (org, options) => RequestLog.createFromRequest(org, "C"),
         afterUpdate: (org, options) => RequestLog.createFromRequest(org, "U"),
         beforeDestroy: (org, options) => RequestLog.createFromRequest(org, "D"),
-        afterBulkCreate: (orgs, options) =>
-          RequestLog.bulkCreateFromRequest(orgs, "C"),
-        beforeBulkDestroy: (orgs, options) =>
-          RequestLog.bulkCreateFromRequest(orgs, "D"),
-        afterBulkUpdate: (orgs, options) =>
-          RequestLog.bulkCreateFromRequest(orgs, "U"),
+        // afterBulkCreate: (orgs, options) =>
+        //   RequestLog.bulkCreateFromRequest(orgs, "C"),
+        // beforeBulkDestroy: (orgs, options) =>
+        //   RequestLog.bulkCreateFromRequest(orgs, "D"),
+        // afterBulkUpdate: (orgs, options) =>
+        //   RequestLog.bulkCreateFromRequest(orgs, "U"),
       },
       sequelize,
       tableName: "requests",
