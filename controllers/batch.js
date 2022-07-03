@@ -50,11 +50,13 @@ module.exports = {
         net_balance_type2: 0,
         type_of_change: "Initialization",
       });
-
+      
+      await t.commit() 
       return res
         .status(201)
         .send({ error: null, message: "success", data: { batch, balancelog } });
     } catch (err) {
+      await t.rollback()
       next(err)
     }
   },
